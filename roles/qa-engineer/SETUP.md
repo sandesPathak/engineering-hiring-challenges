@@ -43,7 +43,7 @@ npm install && npm start        # or: docker compose up --build
 open http://localhost:4000
 ```
 
-Sign in to `/admin.html` as `admin@himalayacc.example` / `admin12345`.
+Sign in to `/staff.html` as `staff@himalayacc.example` / `staff12345`.
 
 Then **read [`app/SPEC.md`](app/SPEC.md) properly.** All of it, including §7. Twenty
 minutes. Every hour you spend testing without it is an hour of guessing, and §7 is the
@@ -59,10 +59,10 @@ be wrong in places and you will revise it at the end — that revision is worth 
 too, because "here is what I got wrong about where the risk was" is a genuinely strong thing
 for us to read.
 
-Rank by **consequence to the organisation and its donors**, not by ease of testing. For a
-platform that takes money from a community, our own ranking would start with: money is
-wrong, a donor's private data leaks, two people get the same thing, the office cannot trust
-the numbers it reports to its board.
+Rank by **consequence to the organisation and its members**, not by ease of testing. For a
+building that a community books and pays for, our own ranking would start with: two
+families are given the same room on the same afternoon, a member's private data leaks, the
+money owed is wrong, the office cannot trust the numbers it reports to its board.
 
 ## 1:00 – 2:30 — Exploratory testing, notes as you go
 
@@ -70,7 +70,7 @@ Two browser tabs, and your API client open beside them. Keep a running log — t
 what you tried, what happened. Write bug reports later; capture evidence now, because you
 will not remember the exact steps at 9pm.
 
-Places worth your attention on a donation platform:
+Places worth your attention on a booking platform:
 
 - **Boundaries.** Minimum, maximum, one under, one over, zero, negative, empty, absent, a
   string where a number goes, a very long string, a very large number
@@ -78,35 +78,41 @@ Places worth your attention on a donation platform:
   A field the interface does not display is still a field that left the server
 - **Two of everything.** Two accounts, two tabs, two simultaneous requests
 - **The awkward seed rows.** The name with a comma and quotation marks, the Devanagari
-  name, the message containing HTML. They are in the data on purpose
-- **Round trips.** Export, then look at the export. Save, then reload. Refund, then check
+  name, the purpose containing HTML. They are in the data on purpose
+- **The edges of a time range.** Back-to-back bookings, a booking that ends exactly when
+  another starts, one that swallows another whole, midnight, and the last slot of the day
+- **Round trips.** Export, then look at the export. Save, then reload. Cancel, then check
   every number that should have moved
-- **The keyboard.** Try the whole donation flow without touching the mouse
+- **The keyboard.** Try the whole booking request without touching the mouse
 
-The single most useful habit: after every action, **check a number somewhere else**. Refund
-a donation and then look at the campaign total, the donor count, the public list and the
-stats panel. Inconsistency between two views of the same fact is where the good findings
-are.
+The single most useful habit: after every action, **check a number somewhere else**. Cancel
+a booking and then look at the hours booked, the hire fees, the deposits held, the public
+calendar and the availability grid. Inconsistency between two views of the same fact is
+where the good findings are.
 
 ## 2:30 – 3:15 — Go under the interface
 
 The interface hides more than it shows. Spend real time here.
 
 ```bash
-# The public payload — read every field, not the ones the page renders
-curl -s localhost:4000/api/campaigns/aangan-courtyard/donations?limit=50 | jq
+# The public calendar payload — read every field, not the ones the page renders
+curl -s 'localhost:4000/api/calendar?from=2026-10-01&to=2026-12-31' | jq
 
 # Sign in, look at the token you were given, and think about what it is made of
 curl -s -X POST localhost:4000/api/auth/login \
   -H 'content-type: application/json' \
-  -d '{"email":"donor@himalayacc.example","password":"donor12345"}' | jq
+  -d '{"email":"member@himalayacc.example","password":"member12345"}' | jq
 
-# What does one donor see of another donor?
-curl -s localhost:4000/api/donations/<some-id> -H "authorization: Bearer <donor-token>" | jq
+# What does one member see of another member's booking?
+curl -s localhost:4000/api/bookings/HCC-BK-4271 -H "authorization: Bearer <member-token>" | jq
 
 # What does the API do with input the form would never send?
-curl -s -X POST localhost:4000/api/donations -H 'content-type: application/json' \
-  -d '{"campaignSlug":"aangan-courtyard","amount":-500,"donor":{"name":"T","email":"t@example.com"}}'
+curl -s -X POST localhost:4000/api/bookings -H 'content-type: application/json' \
+  -H "authorization: Bearer <member-token>" \
+  -d '{"spaceSlug":"library","eventDate":"2026-12-01","startTime":"09:00","endTime":"10:00","attendees":5000,"purpose":"x"}'
+
+# And what the availability endpoint says, next to what the request endpoint does
+curl -s 'localhost:4000/api/spaces/courtyard/availability?date=2026-11-07' | jq
 ```
 
 Check the totals against the numbers in [`app/README.md`](app/README.md), by hand, with a
@@ -119,18 +125,26 @@ You cannot find these by clicking, and they are worth the most.
 
 ```js
 // two-at-once.mjs — Node 24, no dependencies
-const body = JSON.stringify({ codes: ['E05'], sessionId: 'tester' });
+const token = '<a member token from /api/auth/login>';
+const body = JSON.stringify({
+  spaceSlug: 'kitchen',
+  eventDate: '2026-12-15',
+  startTime: '09:00',
+  endTime: '11:00',
+  attendees: 10,
+  purpose: 'Concurrency check',
+});
 const fire = () =>
-  fetch('http://localhost:4000/api/campaigns/aangan-courtyard/units/hold', {
+  fetch('http://localhost:4000/api/bookings', {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
     body,
   }).then((r) => r.status);
 
 const results = await Promise.all(Array.from({ length: 10 }, fire));
 console.log(results);
-// SPEC.md §6: a unit may be held by exactly one person at a time.
-// So: how many of these should have succeeded?
+// SPEC.md §5: two members requesting the same slot at the same moment must not both succeed.
+// So: how many of these should have been 201?
 ```
 
 Ask the same question of every operation where two people could want the same thing, or
@@ -152,9 +166,9 @@ Build it in this order — it is the order of value:
 
 1. **API tests for the defects you found.** Fast, stable, and each one is a regression test.
    Check each **fails** against the app as shipped
-2. **One concurrency test** asserting what §6 requires. This is the highest-value test in
+2. **One concurrency test** asserting what §5 requires. This is the highest-value test in
    the suite
-3. **One end-to-end UI flow** — the donation form is the obvious choice
+3. **One end-to-end UI flow** — request a booking, then see it in the office console
 4. *(Bonus, if you are ahead)* API tests for the rules that are currently correct, so a
    future change cannot break them silently, and `@axe-core/playwright` on both pages
 
@@ -163,7 +177,7 @@ Keep it readable. Name each test after the behaviour it protects, not the endpoi
 ## 5:30 – 6:30 — Write it up
 
 Bug reports from your notes, then `TEST-SUMMARY.md`. Rank by severity. Take a position on
-Friday.
+Friday's release.
 
 Write the summary as though it is going to the technical lead and then to the client,
 because in this job it is.
@@ -194,9 +208,8 @@ Use what you know. If you have no preference:
 ## Practical notes
 
 - **`npm run reset`** before anything that asserts on totals
-- **The guest cooldown is intentional** (`SPEC.md` §7). Set `GUEST_COOLDOWN_SECONDS=0` while
-  testing if it gets in your way, say so in your plan, and remember the shipped default is
-  120
+- **Blackout dates are intentional** (`SPEC.md` §7.3). If a test date keeps being refused,
+  check it is not one of the four closed days before you write it up
 - **Do not point any tool at anything except this app.** No scanning other hosts, no load
   testing to the point of denial of service
 - **Capture evidence as you go.** Re-deriving a reproduction at 10pm is how good findings

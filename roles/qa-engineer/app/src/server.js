@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 import { db, migrate, seed, isSeeded } from './db.js';
 import { login } from './auth.js';
 import { publicRouter } from './routes/public.js';
-import { donorRouter } from './routes/donors.js';
-import { adminRouter } from './routes/admin.js';
+import { memberRouter } from './routes/members.js';
+import { staffRouter } from './routes/staff.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -15,8 +15,8 @@ app.use(express.json());
 app.use(express.static(join(here, '..', 'public')));
 
 app.get('/api/health', (req, res) => {
-  const row = db.prepare('SELECT COUNT(*) AS n FROM donations').get();
-  res.json({ status: 'ok', version: process.env.npm_package_version ?? '1.4.2', donations: row.n });
+  const row = db.prepare('SELECT COUNT(*) AS n FROM bookings').get();
+  res.json({ status: 'ok', version: process.env.npm_package_version ?? '2.3.1', bookings: row.n });
 });
 
 app.post('/api/auth/login', (req, res) => {
@@ -25,12 +25,12 @@ app.post('/api/auth/login', (req, res) => {
 
   const result = login(email, password);
   if (!result.ok) return res.status(result.status).json({ error: result.error });
-  return res.json({ token: result.token, donor: result.donor });
+  return res.json({ token: result.token, member: result.member });
 });
 
 app.use('/api', publicRouter);
-app.use('/api', donorRouter);
-app.use('/api/admin', adminRouter);
+app.use('/api', memberRouter);
+app.use('/api/staff', staffRouter);
 
 app.use((req, res) => res.status(404).json({ error: 'Not found' }));
 
@@ -48,5 +48,5 @@ if (!isSeeded()) {
 
 const port = Number(process.env.PORT ?? 4000);
 app.listen(port, () => {
-  console.log(`Aangan Giving reference build listening on http://localhost:${port}`);
+  console.log(`Sabhaghar Booking reference build listening on http://localhost:${port}`);
 });

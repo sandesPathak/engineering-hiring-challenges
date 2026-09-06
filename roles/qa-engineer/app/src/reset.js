@@ -4,13 +4,13 @@
  */
 import { db, migrate, seed } from './db.js';
 
-for (const table of ['audit_log', 'units', 'donations', 'donors', 'campaigns']) {
+for (const table of ['audit_log', 'booking_addons', 'bookings', 'blackouts', 'addons', 'members', 'spaces']) {
   db.exec(`DROP TABLE IF EXISTS ${table}`);
 }
 
 migrate();
 seed();
 
-const donations = db.prepare('SELECT COUNT(*) AS n FROM donations').get().n;
-const units = db.prepare('SELECT COUNT(*) AS n FROM units').get().n;
-console.log(`Reset complete — ${donations} donations, ${units} units`);
+const bookings = db.prepare('SELECT COUNT(*) AS n FROM bookings').get().n;
+const members = db.prepare('SELECT COUNT(*) AS n FROM members').get().n;
+console.log(`Reset complete — ${bookings} bookings, ${members} members`);

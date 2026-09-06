@@ -34,12 +34,13 @@ h2 { font-size: 18px; margin: 32px 0 12px; }
 .bar { height: 12px; background: var(--line); border-radius: 999px; overflow: hidden; }
 .bar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--brand), var(--brand-dark)); }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
-.donation { border-bottom: 1px solid var(--line); padding: 12px 0; }
-.donation:last-child { border-bottom: 0; }
-.donation .who { font-weight: 600; }
-.donation .amt { float: right; font-variant-numeric: tabular-nums; }
-.donation .ded { color: var(--muted); font-size: 14px; }
-.donation .msg { font-size: 14px; margin-top: 4px; }
+.event { border-bottom: 1px solid var(--line); padding: 12px 0; }
+.event:last-child { border-bottom: 0; }
+.event .what { font-weight: 600; }
+.event .when { float: right; font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; }
+.event .where { color: var(--muted); font-size: 14px; }
+.event.private .who { display: none; }
+.event .who { font-size: 14px; color: var(--muted); }
 button {
   background: var(--brand-dark); color: #fff; border: 0; border-radius: 8px;
   padding: 10px 18px; font-size: 15px; cursor: pointer;
@@ -68,9 +69,18 @@ th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: 
 .pill.refunded { background: #fee2e2; color: #991b1b; }
 .pill.failed { background: #f5f5f4; color: var(--muted); }
 .err { color: #991b1b; font-size: 14px; }
-.grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; margin-top: 12px; }
-.grid button { padding: 0; aspect-ratio: 1; font-size: 10px; background: #fff; color: var(--muted); border: 1px solid var(--line); }
-.grid button.dedicated { background: var(--brand-dark); color: #fff; }
-.grid button.held { background: #fef3c7; }
-.grid button.on { background: var(--brand); color: #fff; }
-@media (max-width: 620px) { .donation .amt { float: none; display: block; } }
+.slots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 12px; }
+.slots div { padding: 8px 4px; text-align: center; font-size: 11px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--muted); }
+.slots div.taken { background: var(--brand-dark); color: #fff; border-color: var(--brand-dark); }
+.spaces { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.spaces .card { cursor: pointer; }
+.spaces .card.on { border-color: var(--brand-dark); box-shadow: 0 0 0 1px var(--brand-dark); }
+.spaces .card.closed { opacity: 0.55; cursor: not-allowed; }
+.spaces .card h3 { margin: 0 0 4px; font-size: 15px; }
+.spaces .card p { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+.spaces .card .meta { font-size: 12px; color: var(--muted); }
+.pill.cancelled { background: #fee2e2; color: #991b1b; }
+.pill.rejected { background: #fee2e2; color: #991b1b; }
+.pill.pending { background: #fef3c7; color: #92400e; }
+.pill.confirmed { background: #dcfce7; color: #166534; }
+@media (max-width: 620px) { .event .when { float: none; display: block; } .slots { grid-template-columns: repeat(4, 1fr); } }

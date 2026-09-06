@@ -1,12 +1,12 @@
-# Aangan Giving — functional specification
+# Sabhaghar Booking — functional specification
 
-**Version 1.4.2 · Himalaya Cultural Centre · last updated by the product owner**
+**Version 2.3.1 · Himalaya Cultural Centre · last updated by the product owner**
 
 This is the specification the reference build was written against. It is the **source of
 truth** for this exercise: if the application does something this document does not
 describe, or contradicts, that is a defect. If the application does something this document
-describes and you find it surprising, that is not a defect — it is a design decision, and
-§7 lists the ones people most often report by mistake.
+*does* describe and you find it surprising, that is not a defect — it is a design decision,
+and §7 lists the ones people most often report by mistake.
 
 Where this document is silent, say so in your report. "The specification does not define
 what should happen when X" is a legitimate and valuable finding, and there are places where
@@ -16,167 +16,171 @@ it genuinely is silent.
 
 ## 1. Purpose
 
-A public page where donors give to a named campaign, and a staff console where the office
-sees what came in. Payments are handled by an external provider; this application records
-the outcome.
+Members of the centre book its halls, courtyard, kitchen and classrooms for weddings,
+ceremonies, classes and meetings. The office reviews each request, approves or rejects it,
+and holds a refundable deposit. A public calendar shows the community what is on.
+
+Money is not taken by this application. Hire fees and deposits are settled at the front
+desk; this system records what is owed and what is held.
 
 ## 2. Roles
 
 | Role | Can |
 |---|---|
-| **Visitor** (not signed in) | View a campaign, view the public donation list, donate as a guest, hold courtyard units |
-| **Donor** (signed in) | Everything a visitor can, plus view **their own** giving history and **their own** donation records |
-| **Admin** (staff) | View, search, filter and export **all** donations; refund a donation; view the audit log |
+| **Visitor** (not signed in) | Browse spaces, see availability for a date, see the public what's-on calendar |
+| **Member** (signed in) | Everything a visitor can, plus request a booking, see **their own** bookings, and cancel **their own** booking |
+| **Staff** | See, search, filter and export **all** bookings; approve and reject requests; read the audit log |
 
-A donor must never be able to read another donor's records or personal details. Staff
-routes are reachable only by an admin.
+A member must never be able to read another member's booking or personal details. Staff
+routes are reachable only by a staff account.
 
-## 3. Campaigns
+## 3. Spaces
 
-Three campaigns are seeded: `aangan-courtyard` (active), `annadaan-kitchen` (active) and
-`roof-repair-2025` (closed).
+Six spaces are seeded. Each has a capacity, an hourly hire rate and a refundable deposit.
 
-`GET /api/campaigns/:slug` returns the title, story, goal, amount raised, donor count and
-percentage of goal.
+| Slug | Name | Capacity | Rate/hour | Deposit | Bookable |
+|---|---|---|---|---|---|
+| `main-hall` | Sabhaghar — Main Hall | 400 | $182.50 | $500 | yes |
+| `courtyard` | Aangan — Courtyard | 150 | $91.30 | $250 | yes |
+| `kitchen` | Community Kitchen | 30 | $62.75 | $150 | yes |
+| `classroom-a` | Classroom A | 40 | $47.35 | $100 | yes |
+| `library` | Reading Room | 20 | $32.10 | $50 | yes |
+| `classroom-b` | Classroom B | 40 | $45.00 | $100 | **no** — closed for renovation |
 
-- **Amount raised counts completed donations only.** A refunded donation and a failed
-  donation both count for nothing.
-- **Donor count** is the number of distinct donors with at least one completed donation.
-- **Percentage** is `raised ÷ goal × 100`, shown to one decimal place.
-- Money is displayed to the cent, with a thousands separator: `$43,058.00`.
+`GET /api/spaces` lists them. `GET /api/spaces/:slug` returns one space with the add-on
+catalogue and the blackout dates.
 
-## 4. The public donation list
+**Money is displayed to the cent, with a thousands separator: `$21,312.90`.** No amount
+anywhere in the system — in a payload or on a page — may show more than two decimal places.
 
-`GET /api/campaigns/:slug/donations` returns the most recent **completed** donations.
+## 4. Availability and the public calendar
 
-**Privacy modes.** Every donation carries one of three, chosen by the donor:
+`GET /api/spaces/:slug/availability?date=YYYY-MM-DD` returns the hours already taken on
+that date, and whether the building is closed.
 
-| Mode | Public display | What may leave the server |
+- A slot is taken when a booking on that space and date is **confirmed, completed or
+  pending**. A pending request holds the slot while the office decides; the office does not
+  want two people invited to the same room.
+- Cancelled and rejected bookings **do not** hold a slot. The room is free again.
+
+`GET /api/calendar?from=&to=` returns the public what's-on list.
+
+- **Only confirmed and completed bookings appear.** A pending request is not an event yet;
+  a cancelled or rejected one never happened.
+- Every booking carries a visibility, chosen by the member:
+
+| Visibility | Public calendar shows | What may leave the server |
 |---|---|---|
-| `public` | The donor's full name | Name |
-| `anonymous` | The word "Anonymous" | **Nothing identifying the donor.** Not their name, not their email, not their donor id — in any field of the response |
-| `family` | "The `<surname>` family" | The surname only |
+| `public` | The purpose, the space, the date and time, and the member's name | Name and purpose |
+| `private` | "Private event", the space, the date and time | **Nothing identifying the member, and not the purpose either** — not their name, not their email, not their member id, in any field of the response |
 
-The dedication line and the dedication message are shown for all three modes.
+## 5. Requesting a booking
 
-**Refunded and failed donations never appear.**
+`POST /api/bookings`. **Sign-in is required.**
 
-## 5. Making a donation
+The request carries `spaceSlug`, `eventDate`, `startTime`, `endTime`, `attendees`,
+`purpose`, optional `notes`, `visibility`, and an optional list of add-ons.
 
-`POST /api/donations`. No account required — guest checkout is the common case.
+**Validation, all enforced on the server:**
 
-| Field | Rule |
-|---|---|
-| `amount` | A number of US dollars. **Minimum $1.00, maximum $25,000.00**, both inclusive, both enforced by the server. Anything outside that range, non-numeric, or missing is rejected with 422. |
-| `donor.name`, `donor.email` | Required. A valid email address. |
-| `privacyMode` | One of `public`, `anonymous`, `family`. Anything else is rejected with 422. |
-| `dedication.type` | Optional, one of `in_honor_of`, `in_memory_of`. |
-| `dedication.name` | Optional. |
-| `dedication.message` | Optional, **at most 280 characters**. |
-| `isRecurring` | Optional boolean. Records intent only; nothing is charged on a schedule. |
-| `paymentToken` | `tok_ok` succeeds, `tok_decline` is declined. |
+- `eventDate` is `YYYY-MM-DD` and **must be in the future**. A date in the past is rejected
+  with 422.
+- `startTime` and `endTime` are on the hour or the half hour, between **09:00 and 23:00**,
+  and the end must be after the start.
+- The booking must be at least **30 minutes** and at most **12 hours**.
+- `attendees` is at least 1 and **at most the capacity of the space**. Over capacity is
+  rejected with 422 — this is a fire regulation, not a preference.
+- The space must be bookable. A closed space is rejected with 409.
+- The date must not be a blackout date (§7.3).
+- **The slot must be free.** Two bookings on the same space and date conflict when their
+  times overlap. Times that merely touch do **not** conflict: a booking that ends at 12:00
+  and one that starts at 12:00 are both allowed, and the seed data contains exactly that
+  pair on the courtyard on 2026-11-07.
+- A conflict is rejected with **409** and names the booking it conflicts with.
 
-On success the response is `201` with a **unique receipt number** in the form
-`HCC-2026-000123`. Two donations must never share a receipt number.
+**Two members requesting the same slot at the same moment must not both succeed.** Exactly
+one gets it. This is the single most important rule in this document.
 
-A declined payment returns `402` and **no donation is recorded**.
+On success the response is **201** with a reference (`HCC-BK-####`), the status `pending`,
+the hours, the total and the deposit.
 
-**A donation is recorded once per payment.** A donor who double-clicks, or whose phone
-retries the request, must end up with one donation, not two.
+### Pricing
 
-## 6. Courtyard units
+`total = hours × hourly_rate + Σ (add-on unit price × quantity)`
 
-The courtyard is a grid of engraved stones, `A01` to `H12`, at **$1,008** each.
+Add-on quantities are whole numbers of **at least zero**. A negative quantity is rejected
+with 422.
 
-- A visitor may select and hold **at most 5** units at a time
-- A hold lasts **10 minutes**, after which the unit becomes available again without anyone
-  having to do anything
-- **A unit may be held by exactly one person at a time.** If two people request the same
-  unit, one succeeds and the other receives `409` naming the units they lost
-- A unit that is already `dedicated` can never be held
+## 6. The office
 
-## 7. Intentional behaviour — please do not report these as defects
+### 6.1 The bookings console
 
-These surprise people. They are all deliberate, and the reasoning is recorded here so that
-a tester can tell the difference between a decision and a mistake.
+`GET /api/staff/bookings` supports:
 
-1. **Guest donation cooldown.** A guest may make only one donation every **120 seconds**
-   from the same IP address; a second attempt returns `429`. This is anti-abuse: donation
-   forms are used by criminals to test stolen card numbers. It is configurable through
-   `GUEST_COOLDOWN_SECONDS`, and you may set it to `0` while testing — but the shipped
-   default is 120 and that is the behaviour under test.
-2. **Preset amounts end in 1** — $21, $51, $101, $501, $1,001. This is not a typo. In this
-   community an auspicious gift ends in one.
-3. **A closed campaign is still visible.** `roof-repair-2025` can be read and appears in
-   the campaign list, but rejects donations with `422`. Donors want to see what their giving
-   finished.
-4. **A campaign may exceed 100% of its goal.** The number keeps going up; the progress bar
-   stops at 100%.
-5. **There is no email.** No receipt email, no confirmation email. Out of scope for 1.4.
-6. **Refunds are all-or-nothing.** Partial refunds are not supported in 1.4.
-7. **The staff console is not translated.** Only the public page was ever in scope for
-   Nepali, and even that is not yet built.
+- `q` — search by member name, member email or reference. **Search must work for a name
+  written in Devanagari**, which is in the seed data.
+- `status` — one of `pending`, `confirmed`, `completed`, `cancelled`, `rejected`, or `all`
+- `space`, `from`, `to` — filters
+- `sort` (`event_date`, `created_at`, `attendees`, `status`), `dir` (`asc`/`desc`)
+- `page` (1 or greater) and `pageSize` (**1 to 100**). Values outside those ranges are
+  rejected with 422; the response must never be an error page or an unbounded dump.
 
-## 8. Staff console
+### 6.2 Approving and rejecting
 
-`GET /api/admin/donations` — every donation, newest first.
+- `POST /api/staff/bookings/:reference/approve` — status becomes `confirmed`. **The slot is
+  re-checked at this moment**: if something else has taken the time since the request was
+  made, approval fails with 409 rather than creating a double booking.
+- `POST /api/staff/bookings/:reference/reject` — status becomes `rejected`, and **the
+  deposit is released**: `deposit.status` becomes `refunded`.
+- Both write an audit row **naming the staff member who did it**.
 
-- **Search** `?q=` matches the donor's name or email address, case-insensitively. It must
-  work for names written in **Devanagari as well as Latin script**; a substantial part of
-  this membership is registered under a Nepali name.
-- **Filters** `?status=`, `?from=`, `?to=`
-- **Pagination** `?page=` (1-based) and `?pageSize=` (default 25). Across consecutive pages
-  every donation appears exactly once. `pageSize` is capped at 100.
-- **Sorting** `?sort=` and `?dir=`, over a fixed set of columns.
+### 6.3 Cancellation by a member
 
-`POST /api/admin/donations/:id/refund` — sets the donation to `refunded`, records who did it
-and why in the audit log, and **removes it from every total in the same operation**.
-Refunding a donation that is already refunded returns `409`.
+`POST /api/my/bookings/:reference/cancel`, on their own booking only.
 
-`GET /api/admin/stats` — the amount raised **today**, where today means today in the
-organisation's own timezone (**US Central**), plus all-time totals by status.
+- Status becomes `cancelled` and the deposit is released.
+- **A booking can only be cancelled once.** A second attempt is rejected with 409, and must
+  not write a second refund.
 
-`GET /api/admin/donations.csv` — the donation list as CSV. It must open correctly in a
-spreadsheet, including for donors whose names contain commas, quotation marks or Devanagari.
+### 6.4 Statistics
 
-## 9. Security requirements
+`GET /api/staff/stats` reports **hours booked** and **hire fees** for bookings that are
+`confirmed` or `completed` only. Cancelled, rejected and pending bookings contribute
+nothing. Deposits held counts bookings whose deposit status is `held`.
 
-1. Passwords are stored using a **modern password hashing function with a salt**
-2. Session tokens are **unguessable**, carry no privileges a client can edit, and **expire**
-3. A donor can read only their own records; an attempt on another donor's record returns
-   **404**
-4. Staff routes are reachable only by an admin
-5. All user input is validated against the rules in §5 before it reaches the database
-6. **Donor-supplied text is escaped wherever it is displayed** — the public page, the staff
-   table, and the CSV export. A dedication message containing HTML must be shown as text
-7. Error responses carry a message for the user and **no internal detail** — no stack
-   traces, no SQL, no file paths
-8. The login endpoint does not reveal whether an email address is registered, and is rate
-   limited
-9. All database access is parameterised
+### 6.5 CSV export
 
-## 10. Accessibility
+`GET /api/staff/bookings.csv` exports the current filter.
 
-Target **WCAG 2.2 level AA**. A significant part of this membership is over 65 and a
-meaningful number use a screen reader or a keyboard only.
+- **RFC 4180 quoting.** A field containing a comma, a quotation mark or a newline is quoted,
+  and quotation marks inside it are doubled. The seed data contains a member whose name is
+  `Shrestha, Bijay "BJ"` and a purpose containing a comma, and both must survive the round
+  trip into a spreadsheet with the columns intact.
+- The file is UTF-8 **with a byte-order mark**, so Devanagari names open correctly in Excel.
 
-- Every form control has a programmatically associated label
-- The whole donation flow is completable with a keyboard alone
-- Focus is always visible, and never trapped anywhere it cannot be escaped
-- Any dialog can be dismissed with `Escape` and returns focus where it came from
-- The progress bar exposes its value to assistive technology
-- Text contrast is at least 4.5:1
+## 7. Deliberate behaviour — not defects
 
-## 11. Browser and device support
+Every item below is intended. Reporting one as a bug costs marks; noticing that it is
+deliberate and saying so does not.
 
-Current Chrome, Safari, Firefox and Edge. Phones from 375px wide upwards. The public page
-must be usable on a phone; the staff console is desktop-first but must not be broken on a
-tablet.
+1. **Guests cannot book.** Browsing is open to everyone, but a booking request requires a
+   member account. The office wants a person attached to every request.
+2. **Every request starts as `pending`.** Nothing is auto-approved, however obviously fine
+   it looks. A human at the front desk decides.
+3. **Blackout dates are refused with 422.** The building is genuinely closed on those days
+   — Ghatasthapana, Vijaya Dashami, Deusi Bhailo and 25 December. This is correct.
+4. **Times must be on the hour or the half hour.** `10:15` is rejected with 422. The
+   caretaker schedules in half-hour blocks.
+5. **Classroom B still appears in the catalogue** while it is closed for renovation, marked
+   as not bookable. Members asked to be able to see it is coming back.
+6. **Deposits are recorded, never charged.** `deposit.status` is `held` from the moment a
+   request is made. Money changes hands at the front desk, not here.
+7. **The building closes at 23:00** and opens at 09:00. A booking outside those hours is
+   rejected with 422 even though the caretaker is sometimes there later.
 
-## 12. Known limitations in 1.4.2 (already accepted by the product owner)
+## 8. Non-functional expectations
 
-- No email of any kind
-- No partial refunds
-- No Nepali translation yet
-- Recurring donations record intent only; nothing charges on a schedule
-- The units grid has no checkout step — holding a unit is as far as 1.4 goes
+- Every page works at 375px wide.
+- The console is used by two members of staff on an old laptop; a list of 100 bookings
+  should not take seconds to render.
+- No page may render a value the office cannot explain to a member on the phone.

@@ -127,8 +127,9 @@ of engineering here; it is beside it.
 The full-stack exercise is a **donation tracking page**, because that is a small honest
 slice of the real work: money, concurrency, authorisation, an admin view, and a deploy.
 
-The QA exercise is **a donation app we broke on purpose**, because your first month on this
-job would be exactly that — arriving at a system somebody else wrote, finding what is
-wrong with it, and building the net that stops it happening again.
+The QA exercise is **a hall-booking system we broke on purpose** — a different corner of the
+same platform, so the two exercises do not overlap — because your first month on this job
+would be exactly that: arriving at a system somebody else wrote, finding what is wrong with
+it, and building the net that stops it happening again.
 
 Neither exercise contains anything from a client repository. Both were written for hiring.

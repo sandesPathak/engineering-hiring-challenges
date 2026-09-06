@@ -7,7 +7,7 @@ Do this before you record the video, so the video shows the finished version.
 - [ ] Fresh clone, `npm install`, my documented command — the suite runs
 - [ ] My README says whether the app must already be running, and on which port
 - [ ] I ran `npm run reset` in `app/` and then my suite, twice, and got the same result
-- [ ] **Every regression test I wrote for a defect has been seen to FAIL against 1.4.2**
+- [ ] **Every regression test I wrote for a defect has been seen to FAIL against 2.3.1**
 - [ ] Each failing test names the bug report it covers, in a comment or the test name
 - [ ] My README states **how many tests fail and why** — a green suite against a broken app
       is a contradiction and I have not shipped one
@@ -21,7 +21,7 @@ Do this before you record the video, so the video shows the finished version.
 - [ ] There is at least one **concurrency** test firing simultaneous requests
 - [ ] There is at least one **end-to-end UI** flow
 - [ ] *(Optional)* an accessibility check, or a manual keyboard pass written into the plan
-- [ ] I checked the campaign totals **by hand** against the numbers in `app/README.md`
+- [ ] I checked the hours, fees and deposit totals **by hand** against `app/README.md`
 
 ## The findings
 

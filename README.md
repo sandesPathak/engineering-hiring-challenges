@@ -7,7 +7,7 @@ This repository holds the take-home exercises for two open roles:
 | Role | Folder | What you build |
 |---|---|---|
 | **Full-Stack Engineer** | [`roles/full-stack-engineer/`](roles/full-stack-engineer/) | A donation tracking page — backend, frontend, database, Docker — in a monorepo |
-| **QA Engineer** | [`roles/qa-engineer/`](roles/qa-engineer/) | Find the defects we planted in a running donation app, then automate the regression suite |
+| **QA Engineer** | [`roles/qa-engineer/`](roles/qa-engineer/) | Find the defects we planted in a running hall-booking system, then automate the regression suite |
 
 You only do the one you applied for. If you applied for both, do the one you want to be
 hired for first, and tell us in your email that the second one is a bonus.

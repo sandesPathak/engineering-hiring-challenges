@@ -1,10 +1,10 @@
-# Test summary — Aangan Giving 1.4.2
+# Test summary — Sabhaghar Booking 2.3.1
 
 | | |
 |---|---|
 | **Tester** | |
 | **Date** | |
-| **Build** | 1.4.2 |
+| **Build** | 2.3.1 |
 | **Effort** | ~N hours |
 | **Recommendation** | **GO / GO WITH CONDITIONS / NO-GO** |
 
@@ -15,12 +15,13 @@
 Lead with it. Three or four sentences a technical lead can act on, and then forward to the
 client without rewriting.
 
-> **No-go for Friday as it stands.** Three defects would cause direct harm during a
-> fundraising drive: the amount raised is overstated because refunds are still counted, any
-> signed-in donor can read every other donor's personal details, and the courtyard grid
-> hands the same stone to every simultaneous request. The first two are small fixes and I
-> would expect them inside a day. The third needs a design decision, so my recommendation is
-> to fix the first two, disable the units grid for launch, and ship the rest.
+> **No-go for Friday as it stands.** Three defects would cause direct harm in the first
+> week of booking season: ten simultaneous requests for the same room all succeed, any
+> signed-in member can read every other member's personal details, and the hours and fees
+> on the office console count cancelled bookings, so the figure going to the board is
+> overstated. The second and third are small fixes and I would expect them inside a day.
+> The first needs a design decision about locking, so my recommendation is to fix the two
+> quick ones, keep approvals manual and staff-supervised for launch, and ship the rest.
 
 Take a position. "Here are some bugs" is not a recommendation, and deciding is the part of
 the job we are hiring for.
@@ -61,7 +62,7 @@ recommend. These are not defects and should not be in the table above.
 | Concurrency | | | |
 | Accessibility | | | |
 
-**N of M tests fail against 1.4.2.** Each failure corresponds to a finding above; the list
+**N of M tests fail against 2.3.1.** Each failure corresponds to a finding above; the list
 is in the suite's README. The suite is expected to go fully green once the findings are
 fixed, and that is how it should be run in CI.
 

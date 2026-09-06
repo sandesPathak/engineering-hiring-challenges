@@ -1,106 +1,101 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Aangan — Courtyard Restoration | Himalaya Cultural Centre</title>
-  <link rel="stylesheet" href="/styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Book a space | Himalaya Cultural Centre</title>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <header>
     <div class="brand">Himalaya Cultural Centre</div>
     <nav>
-      <a href="/">Give</a>
-      <a href="/admin.html">Staff</a>
+      <a href="/">Book a space</a>
+      <a href="/staff.html">Staff</a>
     </nav>
   </header>
 
   <main>
-    <h1 id="title">Loading…</h1>
-    <p class="story" id="story"></p>
+    <h1>Book a space</h1>
+    <p class="story">
+      Halls, the courtyard, the kitchen and the classrooms are available to members for
+      weddings, ceremonies, classes and meetings. Requests are reviewed by the office and
+      confirmed within two working days.
+    </p>
 
-    <div class="stats">
-      <div class="stat"><div class="n" id="raised">—</div><div class="l">Raised</div></div>
-      <div class="stat"><div class="n" id="goal">—</div><div class="l">Goal</div></div>
-      <div class="stat"><div class="n" id="donors">—</div><div class="l">Donors</div></div>
-      <div class="stat"><div class="n" id="percent">—</div><div class="l">Of goal</div></div>
-    </div>
-    <div class="bar"><i id="bar" style="width:0%"></i></div>
+    <h2>Spaces</h2>
+    <div class="spaces" id="spaces"></div>
 
-    <h2>Make a donation</h2>
+    <h2>Availability</h2>
     <div class="card">
-      <div class="presets" id="presets"></div>
       <div class="row">
         <div>
-          <span class="l">Amount (USD)</span>
-          <input id="amount" type="text" placeholder="51.00">
+          <label for="availDate">Date</label>
+          <input type="date" id="availDate" value="2026-11-07" />
         </div>
         <div>
-          <span class="l">Who is giving</span>
-          <input id="name" type="text" placeholder="Full name">
-        </div>
-        <div>
-          <span class="l">Email</span>
-          <input id="email" type="text" placeholder="you@example.com">
+          <label for="availSpace">Space</label>
+          <select id="availSpace"></select>
         </div>
       </div>
-      <div class="row">
-        <div>
-          <span class="l">Dedication</span>
-          <select id="dedType">
-            <option value="">None</option>
-            <option value="in_honor_of">In honour of</option>
-            <option value="in_memory_of">In memory of</option>
-          </select>
-        </div>
-        <div>
-          <span class="l">Dedicated to</span>
-          <input id="dedName" type="text" placeholder="Name">
-        </div>
-        <div>
-          <span class="l">Visibility</span>
-          <select id="privacy">
-            <option value="public">Show my name</option>
-            <option value="anonymous">Anonymous</option>
-            <option value="family">Family name only</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div style="flex:1 1 100%">
-          <span class="l">Message (optional)</span>
-          <textarea id="message" rows="2" placeholder="A short dedication message"></textarea>
-        </div>
-      </div>
-      <div class="row">
-        <div style="flex:1 1 100%">
-          <label><input type="checkbox" id="recurring" style="width:auto"> Repeat this donation every month</label>
-        </div>
-      </div>
-      <button id="give">Donate</button>
-      <span class="err" id="error"></span>
+      <div id="availNote" class="err"></div>
+      <div class="slots" id="slots"></div>
     </div>
 
-    <h2>Dedicate a courtyard stone</h2>
-    <p class="story">Each stone is $1,008. Select up to five; they are held for ten minutes while you finish giving.</p>
-    <div class="grid" id="grid"></div>
-    <div class="row" style="margin-top:12px">
-      <button class="ghost" id="hold">Hold selected stones</button>
-      <span class="err" id="holdError"></span>
+    <h2>Request a booking</h2>
+    <div class="card" id="requestCard">
+      <div id="signinPrompt">
+        <p class="story">Members sign in to request a space.</p>
+        <div class="row">
+          <div><label for="email">Email</label><input id="email" value="member@himalayacc.example" /></div>
+          <div><label for="password">Password</label><input id="password" type="password" value="member12345" /></div>
+        </div>
+        <button id="signin">Sign in</button>
+        <div class="err" id="signinErr"></div>
+      </div>
+
+      <form id="requestForm" class="hidden">
+        <div class="row">
+          <div>
+            <label for="fSpace">Space</label>
+            <select id="fSpace"></select>
+          </div>
+          <div>
+            <label for="fDate">Event date</label>
+            <input type="date" id="fDate" value="2026-11-14" />
+          </div>
+        </div>
+        <div class="row">
+          <div><label for="fStart">Start</label><input id="fStart" value="10:00" /></div>
+          <div><label for="fEnd">End</label><input id="fEnd" value="14:00" /></div>
+          <div><label for="fAttendees">Attendees</label><input id="fAttendees" type="number" value="40" /></div>
+        </div>
+        <div class="row">
+          <div><label for="fPurpose">What is it for</label><input id="fPurpose" value="Community meeting" /></div>
+          <div>
+            <label for="fVisibility">Show on the public calendar</label>
+            <select id="fVisibility">
+              <option value="public">Yes — show the event</option>
+              <option value="private">No — private event</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="fNotes">Notes for the office (optional)</label>
+            <textarea id="fNotes" rows="2"></textarea>
+          </div>
+        </div>
+        <div class="row" id="addonRow"></div>
+        <p class="story" id="quote"></p>
+        <button type="submit">Send request</button>
+        <div class="err" id="formErr"></div>
+      </form>
     </div>
 
-    <h2>Recent giving</h2>
-    <div class="card" id="list">Loading…</div>
+    <h2>What is on</h2>
+    <div class="card" id="calendar"></div>
   </main>
-
-  <div class="overlay hidden" id="thanks">
-    <div class="card">
-      <h2 style="margin-top:0">Thank you</h2>
-      <p>Your donation has been recorded.</p>
-      <p>Receipt number: <strong id="receipt"></strong></p>
-      <button id="close">Close</button>
-    </div>
-  </div>
 
   <script src="/app.js"></script>
 </body>

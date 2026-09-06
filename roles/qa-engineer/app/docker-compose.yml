@@ -6,10 +6,10 @@ services:
       - "4000:4000"
     environment:
       PORT: 4000
-      DB_PATH: /app/data/aangan.sqlite
-      # Seconds a guest must wait between donations from the same IP.
+      DB_PATH: /app/data/sabhaghar.sqlite
+      # Minimum notice, in days, the office needs for a new booking request.
       # This is intentional product behaviour, not a defect. See SPEC.md §7.
-      GUEST_COOLDOWN_SECONDS: 120
+      BOOKING_LEAD_DAYS: 3
       ORG_TIMEZONE: America/Chicago
     volumes:
       - appdata:/app/data

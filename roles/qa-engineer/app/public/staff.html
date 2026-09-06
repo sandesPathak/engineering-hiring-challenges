@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Staff — Bookings | Himalaya Cultural Centre</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">Himalaya Cultural Centre — Staff</div>
+    <nav>
+      <a href="/">Public page</a>
+      <a href="#" id="signout">Sign out</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="loginView">
+      <h1>Sign in</h1>
+      <div class="card">
+        <div><label for="email">Email</label><input id="email" /></div>
+        <div><label for="password">Password</label><input id="password" type="password" /></div>
+        <button id="signin">Sign in</button>
+        <div class="err" id="loginErr"></div>
+      </div>
+    </div>
+
+    <div id="consoleView" class="hidden">
+      <h1>Bookings</h1>
+      <div class="stats" id="stats"></div>
+
+      <div class="row">
+        <div><label for="q">Search</label><input id="q" placeholder="Name, email or reference" /></div>
+        <div>
+          <label for="status">Status</label>
+          <select id="status">
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div><label for="space">Space</label><select id="space"><option value="">All spaces</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="from">From</label><input type="date" id="from" /></div>
+        <div><label for="to">To</label><input type="date" id="to" /></div>
+      </div>
+      <button id="apply">Apply</button>
+      <button class="ghost" id="csv">Export CSV</button>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Reference</th><th>Member</th><th>Space</th><th>When</th>
+            <th>Hours</th><th>Fee</th><th>Status</th><th>Purpose</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="err" id="tableErr"></div>
+    </div>
+  </main>
+
+  <script src="/staff.js"></script>
+</body>
+</html>

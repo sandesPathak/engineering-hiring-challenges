@@ -1,16 +1,16 @@
-# Test plan — Aangan Giving 1.4.2
+# Test plan — Sabhaghar Booking 2.3.1
 
 | | |
 |---|---|
 | **Author** | |
 | **Date** | |
-| **Build** | 1.4.2 |
+| **Build** | 2.3.1 |
 | **Time available** | |
 
 ## 1. Objective
 
 One paragraph. What question is this testing effort answering? For this exercise it is
-usually: *can this go to a client for a live fundraising drive on Friday, and if not, what
+usually: *can this go to a client for a live booking season on Friday, and if not, what
 exactly is in the way?*
 
 ## 2. Scope
@@ -23,21 +23,21 @@ exactly is in the way?*
 
 - …
 
-> This second list is scored. "I did not test the units grid on a phone because `SPEC.md`
-> §11 makes it desktop-first and the fundraising drive is email-driven to desktop" is a
+> This second list is scored. "I did not verify the CSV byte-order mark in Excel because I
+> do not have it, so that finding rests on a hex dump rather than on the spreadsheet" is a
 > strong sentence. An empty out-of-scope list means either you tested everything, which you
 > did not, or you did not decide.
 
 ## 3. Risk assessment
 
-Rank by consequence to the organisation and its donors, not by how easy an area is to test.
+Rank by consequence to the organisation and its members, not by how easy an area is to test.
 Say what informed each ranking.
 
 | # | Risk | Why it matters here | Likelihood | Impact | Where I will look |
 |---|---|---|---|---|---|
-| 1 | Money reported wrong | The treasurer reconciles against a bank statement; the board sees the number | | | Campaign totals, refunds, export |
-| 2 | Donor personal data exposed | Home addresses and giving history for several thousand families | | | API payloads, authorisation |
-| 3 | Two donors given the same unit | An engraved stone cannot be given to two people | | | Concurrent holds |
+| 1 | Two families given the same room | Somebody is turned away on the day of their wedding | | | Concurrent requests, approval, availability |
+| 2 | Member personal data exposed | Home addresses and phone numbers for several hundred families | | | API payloads, authorisation |
+| 3 | Money reported wrong | The treasurer reconciles hire fees and deposits against the bank | | | Stats, totals, export |
 | 4 | … | | | | |
 
 ## 4. Approach
@@ -58,15 +58,15 @@ Which techniques, applied where, and why that split.
 
 Either style. Charters look like this:
 
-> **C1 — Explore the refund flow with two staff sessions, to discover state inconsistency
-> between the donation record, the campaign total, the public list and the stats panel.**
+> **C1 — Explore the cancellation flow with two sessions, to discover state inconsistency
+> between the booking record, the availability grid, the public calendar and the stats.**
 > *45 minutes.*
 
 Cases look like this:
 
 | ID | Area | Precondition | Steps | Expected (spec ref) | Priority |
 |---|---|---|---|---|---|
-| TC-01 | Donation | Fresh reset | … | 422, `SPEC.md` §5 | High |
+| TC-01 | Booking request | Fresh reset | … | 422, `SPEC.md` §5 | High |
 
 ## 6. Environment
 

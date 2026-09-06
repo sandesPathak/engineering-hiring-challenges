@@ -1,7 +1,7 @@
 # QA Engineer — Take-Home Challenge
 
-**We broke a donation app on purpose. Find what is wrong with it, prove it, and build the
-net that stops it coming back.**
+**We broke a booking system on purpose. Find what is wrong with it, prove it, and build
+the net that stops it coming back.**
 
 | | |
 |---|---|
@@ -31,11 +31,12 @@ net that stops it coming back.**
 ## The scenario
 
 You have joined a small studio. On your second day the technical lead hands you version
-1.4.2 of **Aangan Giving**, a donation tracker built for a cultural centre, and says:
+2.3.1 of **Sabhaghar Booking**, the hall and facility booking system for a cultural centre,
+and says:
 
-> "It goes to the client on Friday for a fundraising drive. Nobody has tested it properly.
-> Here is the spec. Tell me what I am walking into, and leave me something that stops it
-> happening again."
+> "It goes live on Friday, and wedding season starts the week after. Nobody has tested it
+> properly. Here is the spec. Tell me what I am walking into, and leave me something that
+> stops it happening again."
 
 That is the exercise. It is also, more or less, a real Tuesday here.
 
@@ -44,7 +45,7 @@ That is the exercise. It is also, more or less, a real Tuesday here.
 Not "how many bugs did you find". Three things:
 
 1. **Judgement.** Did you find the ones that matter, and did you rank them the way somebody
-   with money on the line would rank them? A donor's home address exposed to any logged-in
+   with money on the line would rank them? A member's home address exposed to any logged-in
    user is not the same class of problem as a misaligned button, and a report that lists
    them next to each other tells us you cannot tell.
 2. **Rigour.** Can a developer reproduce your bug from your report, first read, without
@@ -57,13 +58,13 @@ Not "how many bugs did you find". Three things:
 Everything you need is running. There are defects across all of these areas, and the number
 of them in each is deliberately not stated:
 
-- money and arithmetic
+- money and arithmetic — hire fees, deposits, totals
 - authentication, authorisation, and what leaves the server in a payload
-- concurrency — two people doing the same thing at the same moment
+- concurrency — two members booking the same room at the same moment
 - data handling: search, pagination, filtering, export
 - input validation
-- rendering donor-supplied text
-- dates and timezones
+- rendering member-supplied text
+- dates, times and the rules about when a room is free
 - accessibility
 
 Some are visible in the interface. Several are only visible in an API response, which is a

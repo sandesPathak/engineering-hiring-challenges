@@ -3,11 +3,11 @@ import { db, hashPassword } from './db.js';
 /**
  * Session tokens for the reference build.
  *
- * v1.4 replaced the stored-session table with a self-describing token so that the
- * app could be scaled to more than one process without a shared session store.
+ * v2.1 replaced the stored-session table with a self-describing token so the app
+ * could run on more than one process without a shared session store.
  */
-export function issueToken(donor) {
-  return Buffer.from(`${donor.id}:${donor.email}:${donor.role}`).toString('base64');
+export function issueToken(member) {
+  return Buffer.from(`${member.id}:${member.email}:${member.role}`).toString('base64');
 }
 
 export function readToken(token) {
@@ -21,20 +21,20 @@ export function readToken(token) {
 }
 
 export function login(email, password) {
-  const donor = db.prepare('SELECT * FROM donors WHERE email = ?').get(email);
-  if (!donor) {
+  const member = db.prepare('SELECT * FROM members WHERE email = ?').get(email);
+  if (!member) {
     return { ok: false, status: 404, error: 'No account exists for that email address' };
   }
-  if (!donor.password_hash) {
-    return { ok: false, status: 403, error: 'This donor has never set a password' };
+  if (!member.password_hash) {
+    return { ok: false, status: 403, error: 'This member has never set a password' };
   }
-  if (donor.password_hash !== hashPassword(password)) {
+  if (member.password_hash !== hashPassword(password)) {
     return { ok: false, status: 401, error: 'Incorrect password' };
   }
   return {
     ok: true,
-    token: issueToken(donor),
-    donor: { id: donor.id, name: donor.name, email: donor.email, role: donor.role },
+    token: issueToken(member),
+    member: { id: member.id, name: member.name, email: member.email, role: member.role },
   };
 }
 
@@ -47,7 +47,7 @@ function bearer(req) {
 export function currentUser(req) {
   const claims = bearer(req);
   if (!claims) return null;
-  return db.prepare('SELECT id, name, email, role FROM donors WHERE id = ?').get(claims.id) ?? null;
+  return db.prepare('SELECT id, name, email, role FROM members WHERE id = ?').get(claims.id) ?? null;
 }
 
 export function requireAuth(req, res, next) {
@@ -57,10 +57,10 @@ export function requireAuth(req, res, next) {
   return next();
 }
 
-export function requireAdmin(req, res, next) {
+export function requireStaff(req, res, next) {
   const claims = bearer(req);
   if (!claims) return res.status(401).json({ error: 'Sign in to continue' });
-  if (claims.role !== 'admin') return res.status(403).json({ error: 'Administrators only' });
+  if (claims.role !== 'staff') return res.status(403).json({ error: 'Staff only' });
   req.user = claims;
   return next();
 }

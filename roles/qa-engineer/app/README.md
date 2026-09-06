@@ -1,135 +1,122 @@
-# Aangan Giving — reference build v1.4.2
+# Sabhaghar Booking — reference build v2.3.1
 
-The application under test. A small donation tracking page for the Himalaya Cultural
-Centre: a public campaign page, a guest donation flow, a courtyard units grid, and a staff
-console.
+The application under test. It is the hall and facility booking system for the Himalaya
+Cultural Centre: members request a space, the office approves it, and a public calendar
+shows the community what is on.
 
-**This build contains defects that were put here deliberately.** Finding them is the
-exercise. Read [`SPEC.md`](SPEC.md) — it is the source of truth for what the application is
-*supposed* to do, and §7 lists the behaviour that surprises people and is nonetheless
-correct.
+**It has defects in it. That is the exercise.** Some are visible on the page, some only in
+the API payloads, some only appear when two people do something at the same moment. Your
+job is to find them, report them so a developer can fix them without asking you a question,
+and leave behind an automated suite that would catch them coming back.
 
-Do not read the source expecting clean code. It is written the way a real second-year
-codebase is written, which is the point.
+Read [`SPEC.md`](SPEC.md) before you start. It is the source of truth for what the
+behaviour is supposed to be, and **§7 lists behaviour that looks wrong and is deliberate** —
+reporting those costs marks.
 
 ---
 
-## Run it
+## Running it
 
-### Docker (recommended)
+Node 24 and nothing else. There is one dependency and no build step.
 
 ```bash
-cd roles/qa-engineer/app
+npm install          # about ten seconds
+npm start            # http://localhost:4000
+```
+
+Or under Docker, which is how we run it when we review your work:
+
+```bash
 docker compose up --build
-# → http://localhost:4000
 ```
 
-### Node directly
-
-Node 22.11+ or, better, **Node 24**. The database is SQLite through Node's built-in
-`node:sqlite`, so there is nothing to install beyond Express and nothing to compile.
+To put the data back exactly as you found it:
 
 ```bash
-cd roles/qa-engineer/app
-npm install
-npm start
-# → http://localhost:4000
+npm run reset        # drops every table and reseeds
 ```
 
-The database is created and seeded on first start at `data/aangan.sqlite`.
+Do that between test runs. Your automated suite should assume it starts from the seeded
+state, and should say so if it does not.
 
-### Reset between test runs
+### Configuration
 
-```bash
-npm run reset      # drops everything and reseeds — 75 donations, 96 units
-```
-
-Do this before a suite that asserts on totals. Your own testing will change the data, and a
-test that passed yesterday against a polluted database is not a test.
+| Variable | Default | What it does |
+|---|---|---|
+| `PORT` | `4000` | Port to listen on |
+| `DB_PATH` | `./data/sabhaghar.sqlite` | Where the SQLite file lives |
+| `BOOKING_LEAD_DAYS` | `3` | Notice the office asks for on a new request |
+| `ORG_TIMEZONE` | `America/Chicago` | The centre's timezone |
 
 ---
 
 ## Accounts
 
-| Email | Password | Role |
+```
+staff@himalayacc.example     staff12345      staff  — the office console
+member@himalayacc.example    member12345     member — has seeded bookings
+other@himalayacc.example     other12345      member — use this one to prove authorisation
+```
+
+Every seeded member also exists as an account, but without a password.
+
+## The two pages
+
+| Page | What it is |
+|---|---|
+| `http://localhost:4000/` | Members: browse spaces, check availability, request a booking, see what is on |
+| `http://localhost:4000/staff.html` | The office: every booking, search, filters, approve, reject, CSV export |
+
+## The API
+
+| Method | Path | Notes |
 |---|---|---|
-| `admin@himalayacc.example` | `admin12345` | admin |
-| `donor@himalayacc.example` | `donor12345` | donor — owns 3 seeded donations |
-| `other@himalayacc.example` | `other12345` | donor — owns 2 seeded donations |
+| `POST` | `/api/auth/login` | Returns a session token |
+| `GET` | `/api/spaces` · `/api/spaces/:slug` | Catalogue, add-ons, blackout dates |
+| `GET` | `/api/spaces/:slug/availability?date=` | What is taken that day |
+| `GET` | `/api/calendar?from=&to=` | The public what's-on list |
+| `POST` | `/api/bookings` | Request a booking. Signed in |
+| `GET` | `/api/bookings/:reference` | One booking |
+| `GET` | `/api/my/bookings` · `/api/my/profile` | The signed-in member's own records |
+| `POST` | `/api/my/bookings/:reference/cancel` | Cancel your own booking |
+| `GET` | `/api/staff/bookings` · `/bookings.csv` · `/stats` · `/audit` | The office. Staff only |
+| `POST` | `/api/staff/bookings/:reference/approve` · `/reject` | Decide a request |
 
-Use `donor@` and `other@` together. Two accounts is what it takes to test an authorisation
-rule, and one is what it takes to miss one.
+Send the token as `Authorization: Bearer <token>`.
 
-Every other seeded donor is a guest with no password, which is the normal case.
+```bash
+TOKEN=$(curl -s localhost:4000/api/auth/login -H 'content-type: application/json' \
+  -d '{"email":"staff@himalayacc.example","password":"staff12345"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)["token"])')
+
+curl -s "localhost:4000/api/staff/bookings?pageSize=5" -H "Authorization: Bearer $TOKEN"
+```
 
 ---
 
-## Pages
+## The seeded data, and the numbers you can check by hand
+
+84 bookings across 87 members and six spaces, seeded from
+[`src/seed/bookings.csv`](src/seed/bookings.csv). Read that file — it is a short read and it
+tells you what the application is supposed to be holding.
 
 | | |
 |---|---|
-| `/` | Public campaign page, donation form, units grid, recent giving |
-| `/admin.html` | Staff console — sign in, search, filter, refund, export |
+| Bookings by status | 37 confirmed · 22 completed · 8 pending · 11 cancelled · 6 rejected |
+| Hours booked (confirmed and completed, per §6.4) | **200.5** |
+| Hire fees on those bookings | **$21,312.90** |
+| Deposits held | **$16,400.00** |
+| Private events in the data | 16 |
+| Members whose name is in Devanagari | 2 |
 
-## API
+**Work those figures out yourself from the CSV before you trust anything the application
+tells you.** More than one number on the screens does not match the data behind it, and the
+fastest way to find that class of defect is to have the right answer in front of you first.
 
-| | |
-|---|---|
-| `GET /api/health` | liveness and the seeded donation count |
-| `GET /api/campaigns` | all campaigns |
-| `GET /api/campaigns/:slug` | one campaign with its totals |
-| `GET /api/campaigns/:slug/donations?limit=` | the public list |
-| `POST /api/donations` | make a donation |
-| `GET /api/campaigns/:slug/units` | the courtyard grid |
-| `POST /api/campaigns/:slug/units/hold` | hold units |
-| `POST /api/auth/login` | returns a bearer token |
-| `GET /api/me` · `GET /api/me/donations` | the signed-in donor |
-| `GET /api/donations/:id` · `GET /api/donors/:id` | records |
-| `GET /api/receipts/:receiptNumber` | look up a receipt |
-| `GET /api/admin/donations` | `?q= &status= &from= &to= &page= &pageSize= &sort= &dir=` |
-| `POST /api/admin/donations/:id/refund` | |
-| `GET /api/admin/stats` · `GET /api/admin/audit` | |
-| `GET /api/admin/donations.csv` | export |
+Some rows in the seed file are deliberately awkward: a name containing a comma and
+quotation marks, two names in Devanagari, a purpose containing HTML, an emoji, a 280-
+character note, the same person's email in two different capitalisations, a booking at
+exactly the room's capacity, a twelve-hour booking, a late-evening booking, and a
+back-to-back pair on the courtyard on 2026-11-07 that the specification says is legal.
 
-Authenticate with `Authorization: Bearer <token>` from the login response.
-
----
-
-## Configuration
-
-| Variable | Default | |
-|---|---|---|
-| `PORT` | `4000` | |
-| `DB_PATH` | `./data/aangan.sqlite` | |
-| `GUEST_COOLDOWN_SECONDS` | `120` | Seconds between guest donations from one IP. **Intentional** — see `SPEC.md` §7. Set to `0` while testing, but report against the shipped default. |
-| `PAYMENT_LATENCY_MS` | `120` | Simulated payment provider round trip |
-| `PRICING_LATENCY_MS` | `60` | Simulated pricing service round trip |
-| `ORG_TIMEZONE` | `America/Chicago` | The organisation's timezone |
-
----
-
-## The seeded data
-
-75 donations across the three campaigns. Several rows are awkward on purpose — a name with
-a comma and quotation marks, a name in Devanagari, a message containing HTML, amounts at
-the exact minimum and maximum, refunded and failed donations, and the same person under two
-capitalisations of their email address.
-
-Numbers you can check by hand against a correct implementation of `SPEC.md`:
-
-- **75** donations — 66 completed, 7 refunded, 2 failed
-- Completed donations for `aangan-courtyard` total **$43,058.00**
-- 96 courtyard units, of which 5 are already dedicated
-
-If the application shows you a different number, that is not a mistake in this README.
-
----
-
-## A note on the guest cooldown
-
-It will get in your way when you are testing the donation form by hand. That is what it
-does to a real donor too, which is why it is in the specification rather than hidden.
-
-Set `GUEST_COOLDOWN_SECONDS=0` for your automated suite if you need to, say so in your test
-plan, and remember that the shipped default is 120 — a suite that only ever runs with the
-protection disabled has not tested the shipped product.
+None of that is decoration. Each one is there because it breaks something, or because it
+should not and you should check.

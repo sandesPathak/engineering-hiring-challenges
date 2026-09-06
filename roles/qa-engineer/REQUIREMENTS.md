@@ -13,19 +13,19 @@ Written **before** you go deep, and it is fine — good, even — to revise it a
 say what changed.
 
 - **Scope.** What you are testing and, more importantly, **what you are not**, with a
-  reason. "I did not test the units grid on mobile because the spec marks it desktop-only
-  in 1.4" is a strong sentence.
-- **Risk assessment.** Where do you expect the damage to be, and why? For a donation
-  platform, rank by consequence to the organisation and its donors, not by how easy the area
-  is to test. Say what informed the ranking.
+  reason. "I did not test the CSV export in Excel because I do not have it, so the
+  byte-order-mark finding is unverified there" is a strong sentence.
+- **Risk assessment.** Where do you expect the damage to be, and why? For a building the
+  community books and pays for, rank by consequence to the organisation and its members,
+  not by how easy the area is to test. Say what informed the ranking.
 - **Approach.** Which of exploratory, functional, API, security, concurrency, accessibility,
   compatibility, data-integrity testing you used, and where.
 - **Test charters or cases.** Either style is fine. Session-based charters
-  ("Explore the refund flow with concurrent staff sessions, to discover state
+  ("Explore the cancellation flow with concurrent staff sessions, to discover state
   inconsistencies") are as acceptable as a numbered case table — we want to see structure,
   not a particular template.
-- **Environment.** How you ran it, browsers and versions, the OS, the data state, whether
-  you changed `GUEST_COOLDOWN_SECONDS`.
+- **Environment.** How you ran it, browsers and versions, the OS, and the data state —
+  whether each run started from `npm run reset`.
 - **Entry and exit criteria.** What would make you say "this is ready for Friday", and what
   would make you say no.
 
@@ -42,9 +42,9 @@ Each report needs:
   the account used, the data used, and the exact request if it is an API defect
 - **expected** result, **with a citation to `SPEC.md`** — section number
 - **actual** result, with the evidence: a response body, a screenshot, a log line, a number
-- **impact in the client's language.** Not "IDOR on `/api/donors/:id`" but "any donor who
-  signs in can read every other donor's home address and phone number by changing a number
-  in the URL — several hundred families, including people who asked to be anonymous"
+- **impact in the client's language.** Not "IDOR on `/api/bookings/:reference`" but "any
+  member who signs in can read every other member's home address and phone number, and the
+  purpose of the events they marked private, by changing a reference in the URL"
 - **environment**
 - **suggested fix or area**, if you have one. Optional, and appreciated.
 
@@ -78,7 +78,7 @@ Python or Java, are all fine.
 |---|---|
 | **API** | The fastest, most valuable layer here. A handful of tests covering the defects you found — authorisation, validation, privacy in payloads, totals arithmetic. |
 | **Concurrency** | **One** test that fires simultaneous requests and asserts what the spec requires. Worth more than any five UI tests. |
-| **UI end-to-end** | **One** flow. The donation form is the obvious choice. One is genuinely enough. |
+| **UI end-to-end** | **One** flow. Requesting a booking is the obvious choice. One is genuinely enough. |
 
 Accessibility automation, cross-browser runs and load testing are all in the should-have
 list. A manual keyboard pass noted in your test plan is worth more than an axe run you did
@@ -90,8 +90,8 @@ or not the bug is present is worse than no test, because it creates false confid
 them clearly:
 
 ```js
-// Fails against 1.4.2 — see bugs/BUG-004-anonymous-donor-name-in-payload.md
-test('an anonymous donation exposes no donor identity in the public payload', async () => { … });
+// Fails against 2.3.1 — see bugs/BUG-004-private-event-identifies-member.md
+test('a private event exposes no member identity in the public calendar payload', async () => { … });
 ```
 
 We will run your suite and expect a specific number of failures. Tell us that number in your
@@ -106,7 +106,8 @@ The document you would actually send to the technical lead. Use
 - What you tested, in how long, and how
 - **The findings table**, ranked by severity, one line each
 - **A go / no-go recommendation for Friday, with conditions.** Take a position. "Ship, but
-  only after the three critical items, and with the units grid disabled" is a real answer.
+  only after the three critical items, and with self-service cancellation disabled" is a
+  real answer.
   "Here are some bugs" is not.
 - Coverage gaps and residual risk — what you did not test and what could still bite
 - What you would automate next, and what you would ask the developers to change to make the
@@ -130,7 +131,7 @@ including a test failing against the unfixed bug.
 - **A CI workflow** (`.github/workflows/`) that runs the suite on push, with the report as
   an artefact. This is the deliverable that makes the suite matter, and it is the single
   best use of your remaining time.
-- **A performance or load observation** — k6 or autocannon against the donation endpoint,
+- **A performance or load observation** — k6 or autocannon against the availability endpoint,
   with a number, not a feeling.
 - **A cross-browser run** on Chromium, WebKit and Firefox, with the differences noted.
 - **A test-data strategy** — factories, fixtures, or a documented approach to the state

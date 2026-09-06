@@ -10,7 +10,7 @@ COPY public ./public
 
 ENV NODE_ENV=production
 ENV PORT=4000
-ENV DB_PATH=/app/data/aangan.sqlite
+ENV DB_PATH=/app/data/sabhaghar.sqlite
 
 RUN mkdir -p /app/data && chown -R node:node /app/data
 USER node

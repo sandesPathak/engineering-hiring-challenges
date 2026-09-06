@@ -71,15 +71,15 @@ outscores one that quietly did not test X.
 
 ## 4. Security & data-integrity findings — 15 points
 
-The classes that would hurt a real donor. Scored on whether you found them, and on whether
+The classes that would hurt a real member. Scored on whether you found them, and on whether
 your report conveys the impact to somebody non-technical.
 
 | Class | Points |
 |---|---|
-| Broken authorisation — one donor reading another's records | 4 |
+| Broken authorisation — one member reading another's records | 4 |
 | Personal data leaving the server that should not have | 3 |
 | A forgeable or non-expiring credential | 3 |
-| Donor-supplied content rendered unescaped | 2 |
+| Member-supplied content rendered unescaped | 2 |
 | Money or aggregate arithmetic that is wrong | 2 |
 | Input validation that lets impossible data into the database | 1 |
 
@@ -123,10 +123,10 @@ being handed to more than one caller, with the evidence.
 ## Worked examples
 
 **A 93.** Suite runs first command. Eleven findings, ranked, the top three being an
-authorisation break, a donor-identity leak in a public payload, and a race on unit holds
-with a ten-request proof. Each report cites a spec section. The summary says "no-go for
-Friday unless the three critical items are fixed; the units grid should be disabled
-regardless" and explains what that costs the client. Eighteen automated tests, six failing,
+authorisation break, a member-identity leak in the public calendar payload, and a race that
+gives one room to ten simultaneous requests, with the proof. Each report cites a spec
+section. The summary says "no-go for Friday unless the three critical items are fixed;
+self-service cancellation should be disabled regardless" and explains what that costs the client. Eighteen automated tests, six failing,
 each one labelled with the bug it covers. A CI workflow. The video reproduces the race in
 forty seconds.
 
