@@ -11,15 +11,19 @@ net that stops it coming back.**
 | **The spec** | [`app/SPEC.md`](app/SPEC.md) — the source of truth for what is a defect |
 | **Deliverables** | A test plan, bug reports, an automated suite, a summary, and a 2–3 minute video |
 
-## Read these first
+## Which files do I actually need?
 
-1. [`../../docs/00-about-us-and-the-project.md`](../../docs/00-about-us-and-the-project.md) — why this exercise looks like this
-2. [`app/README.md`](app/README.md) — how to run it, the accounts, the seeded numbers
-3. [`app/SPEC.md`](app/SPEC.md) — **read this properly.** §7 lists the behaviour that looks like a bug and is not
-4. [`REQUIREMENTS.md`](REQUIREMENTS.md) — what you have to produce
-5. [`SETUP.md`](SETUP.md) — a suggested path through the day
-6. [`RUBRIC.md`](RUBRIC.md) — exactly how the 100 points are allocated
-7. [`CHECKLIST.md`](CHECKLIST.md) — tick this before you submit
+**Four files, then start testing.** Everything else is reference.
+
+| | File | |
+|---|---|---|
+| **Read now** | [`app/README.md`](app/README.md) | How to run it, the accounts, and the seeded numbers you can check by hand. |
+| **Read now** | [`app/SPEC.md`](app/SPEC.md) | **The source of truth for what counts as a defect.** §7 lists behaviour that looks wrong and is not — reporting those costs points. |
+| **Read now** | [`REQUIREMENTS.md`](REQUIREMENTS.md) | The five deliverables. |
+| **Read now** | [`SETUP.md`](SETUP.md) | A suggested path through the day, with the API commands to get you moving. |
+| Reference | [`templates/`](templates/) | Bug report, test plan and test summary templates. Use them or do not — they show what we expect a report to contain. |
+| Before you submit | [`CHECKLIST.md`](CHECKLIST.md) | Thirty minutes, and it protects the biggest scoring category. |
+| If curious | [`RUBRIC.md`](RUBRIC.md) | The exact points breakdown. |
 
 ---
 
@@ -67,6 +71,25 @@ requests to see at all.
 
 **Some behaviour that looks wrong is correct** and is documented in `SPEC.md` §7. Reporting
 those costs you points — reading the specification carefully is part of the job.
+
+---
+
+## What a good 6-hour submission looks like
+
+So you can calibrate rather than guess. This is a **strong** submission, not a minimum one:
+
+- A two-page `TEST-PLAN.md` with a real out-of-scope list and a risk ranking
+- **Eight bug reports**, ranked, of which two or three are serious and at least one is not
+  visible in the interface
+- **Nine automated tests**: six API, one concurrency, one UI flow, one that fails and is
+  labelled with the bug it covers
+- A `TEST-SUMMARY.md` that ends in a go / no-go recommendation with conditions
+- Nine commits and a three-minute video
+
+**No CI workflow. No load testing. No cross-browser matrix. Eight bugs, not twenty-five.**
+That submission scores in the eighties. The submissions that score below sixty are almost
+never the ones that found fewer bugs — they are the ones with twenty green UI tests, no
+ranking, and no recommendation.
 
 ---
 

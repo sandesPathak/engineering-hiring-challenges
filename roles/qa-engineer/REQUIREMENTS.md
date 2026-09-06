@@ -48,8 +48,10 @@ Each report needs:
 - **environment**
 - **suggested fix or area**, if you have one. Optional, and appreciated.
 
-**Quality over quantity.** Ten sharp reports beat thirty thin ones. Duplicates, and defects
-that are actually documented behaviour from `SPEC.md` §7, both cost you points.
+**How many?** **Six to ten well-written reports is a complete submission.** We are not
+counting — we are looking at whether the serious ones are in there and whether they are
+ranked correctly. Ten sharp reports beat thirty thin ones, and thirty thin ones score worse
+than ten, because duplicates and §7 behaviour both cost points.
 
 If you are unsure whether something is a defect, **report it as a question** with your
 reasoning. That is a real category and we score it positively — it is what you would do on
@@ -70,14 +72,17 @@ Python or Java, are all fine.
 - Deterministic. No `waitForTimeout(3000)` as a synchronisation strategy
 - Readable. A developer who has never seen it should be able to add a case
 
-**Coverage we look for:**
+**Required coverage — three things.** Anything beyond them is a bonus:
 
-| Layer | What we want to see |
+| Layer | What is required |
 |---|---|
-| **API** | The fastest, most valuable layer here. Authorisation, validation, privacy in payloads, totals arithmetic. |
-| **UI end-to-end** | At least the donation flow and one staff flow. |
-| **Concurrency** | At least one test that fires simultaneous requests and asserts what the spec requires. This is worth more than any five UI tests. |
-| **Accessibility** | Automated is fine — `@axe-core/playwright` on the two main pages, plus a manual keyboard pass noted in your plan. |
+| **API** | The fastest, most valuable layer here. A handful of tests covering the defects you found — authorisation, validation, privacy in payloads, totals arithmetic. |
+| **Concurrency** | **One** test that fires simultaneous requests and asserts what the spec requires. Worth more than any five UI tests. |
+| **UI end-to-end** | **One** flow. The donation form is the obvious choice. One is genuinely enough. |
+
+Accessibility automation, cross-browser runs and load testing are all in the should-have
+list. A manual keyboard pass noted in your test plan is worth more than an axe run you did
+not read.
 
 **Every regression test must have failed at least once.** Before you submit, check that each
 test for a defect you found **fails against the app as shipped**. A test that passes whether
@@ -120,6 +125,8 @@ including a test failing against the unfixed bug.
 
 ## Should-have — if the must-haves are genuinely done
 
+- **Accessibility checks** — `@axe-core/playwright` on the two main pages, plus the manual
+  keyboard findings written up. Cheap, and it usually finds something real.
 - **A CI workflow** (`.github/workflows/`) that runs the suite on push, with the report as
   an artefact. This is the deliverable that makes the suite matter, and it is the single
   best use of your remaining time.

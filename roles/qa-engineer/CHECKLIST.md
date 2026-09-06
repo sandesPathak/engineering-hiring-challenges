@@ -20,7 +20,7 @@ Do this before you record the video, so the video shows the finished version.
 - [ ] There is at least one **authorisation** test using two different accounts
 - [ ] There is at least one **concurrency** test firing simultaneous requests
 - [ ] There is at least one **end-to-end UI** flow
-- [ ] There is an **accessibility** check on both pages
+- [ ] *(Optional)* an accessibility check, or a manual keyboard pass written into the plan
 - [ ] I checked the campaign totals **by hand** against the numbers in `app/README.md`
 
 ## The findings

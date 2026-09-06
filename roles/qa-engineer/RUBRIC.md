@@ -62,7 +62,7 @@ three findings know the worst of it?
 |---|---|
 | A plan with **scope, and explicit out-of-scope with reasons** | 4 |
 | Risk ranking that reflects consequence to the organisation, with the reasoning shown | 3 |
-| Suite structured by value — API and concurrency where they belong, not everything through the UI | 4 |
+| Suite structured by value — the required API, concurrency and one UI test, not everything through the UI | 4 |
 | Every regression test has been verified to fail against the shipped build | 2 |
 | Coverage gaps named honestly in the summary | 2 |
 
@@ -112,6 +112,7 @@ being handed to more than one caller, with the evidence.
 | | |
 |---|---|
 | CI workflow running the suite with the report as an artefact | +3 |
+| Accessibility checks automated, with the manual keyboard findings written up | +2 |
 | A defect-prevention note — what you would change about how the team works | +2 |
 | Cross-browser run with the differences noted | +1 |
 | A load or performance observation with an actual number | +1 |
