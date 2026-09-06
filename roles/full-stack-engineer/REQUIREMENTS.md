@@ -91,16 +91,14 @@ Anonymous visitor, no login.
 - **Role separation.** An `admin` sees everything. A logged-in `donor` sees **only their
   own** donations. Enforce it in the query, not in a branch after the fetch, and return 404
   rather than 403 for somebody else's record.
-- A donation list with:
-  - search by donor name or email — **and it must work for a name written in Devanagari**,
-    which is in your seed data
-  - filter by status (`completed` / `refunded` / `failed`) and by date range
-  - pagination that is correct at the boundaries. Page 2 must not repeat or skip a row.
+- A donation list with **search by donor name or email** — and it must work for a name
+  written in Devanagari, which is in your seed data — and a **filter by status**
+  (`completed` / `refunded` / `failed`).
 - **Refund** an individual donation. The status changes, an audit row is written, and every
   aggregate updates in the same transaction.
-- **CSV export** of the filtered list. It must survive a donor named
-  `Shrestha, Bijay "BJ"` and a name in Devanagari without shifting columns — there is one of
-  each in the seed data, on purpose.
+
+That is the whole must-have. Pagination, date-range filtering and CSV export are all in the
+should-have list below — build them if you have time, and do not feel behind if you do not.
 
 ## M6 — Security
 
@@ -126,18 +124,20 @@ it is the one people lose.
 
 ## M8 — Tests
 
-No coverage target. We look at *what* you chose to test. At minimum:
+No coverage target, and we will not count your percentage. **Three tests are required.** We
+look at whether you tested the things that would actually hurt:
 
-- **Money.** Conversion, arithmetic, formatting, and the boundaries: $0.99, $1.00,
-  $25,000.00, $25,000.01, a negative, a string, `null`, `1e9`.
-- **Privacy.** An anonymous donation's API response contains no donor name. Assert on the
-  serialised payload, not on a function's return value.
-- **Authorisation.** Donor A cannot read donor B's donation. This is the test we look for
+- **Money.** Conversion, arithmetic and the boundaries: $0.99, $1.00, $25,000.00,
+  $25,000.01, a negative, a string, `null`.
+- **Authorisation.** Donor A cannot read donor B's donation. This is the one we look for
   first.
-- **Refund.** Totals, counts and the public list all move, and they move together.
-- **Pagination boundaries.** No repeats, no skips, across a page boundary.
-- **One end-to-end path**, ideally with Playwright: land on the page → donate → see it
-  appear. It does not have to be more than one.
+- **Refund.** The totals, the donor count and the public list all move, and they move
+  together.
+
+Anything beyond those three is a bonus, not an expectation. If you have time, the highest
+value additions are a test that an anonymous donation's serialised API response contains no
+donor name, and one end-to-end path with Playwright — land on the page, donate, see it
+appear. One is enough.
 
 ## M9 — Documentation and the video
 
@@ -148,6 +148,12 @@ per-app READMEs, `AI-USAGE.md`, and a 2–3 minute video.
 ---
 
 ## Should-have — if the must-haves are genuinely done
+
+**S0 — The rest of the admin view.** Pagination that is correct at the boundaries — page 2
+must not repeat or skip a row — a date-range filter, and a CSV export of the filtered list
+that survives a donor named `Shrestha, Bijay "BJ"` and a name in Devanagari without shifting
+columns. There is one of each in the seed data, on purpose. **If you only do one
+should-have, do this one.**
 
 **S1 — Donor history.** A logged-in donor sees their own giving history and total, and
 nobody else's.

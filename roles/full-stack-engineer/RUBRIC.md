@@ -36,10 +36,10 @@ Roughly 3 points per must-have, weighted by how much of the product depends on i
 | M2 | 3 | Migrations committed, constraints in the DB, seed loads all 75 rows correctly. |
 | M3 | 4 | Correct totals, **privacy enforced server-side**, refunds excluded, empty/loading/error states. |
 | M4 | 4 | Guest checkout, presets and custom, server-side amount validation, decline **and timeout** handled distinctly, receipt number. |
-| M5 | 4 | Role separation enforced in the query, search works in Devanagari, pagination correct at boundaries, refund transactional, CSV survives the awkward rows. |
+| M5 | 4 | Role separation enforced in the query, search works in Devanagari, status filter, refund transactional. |
 | M6 | 3 | See category 4 — scored there in detail; this is the "did you do it at all" mark. |
 | M7 | 2 | Multi-stage build, health check, non-root, `.dockerignore`. |
-| M8 | 2 | The tests listed in M8 exist and pass. |
+| M8 | 2 | The three required tests — money boundaries, authorisation, refund — exist and pass. |
 | M9 | 1 | READMEs and `AI-USAGE.md` present. |
 
 Should-haves and stretch goals do **not** add points in this category. They add in category 3,
@@ -63,14 +63,15 @@ weaker implementation and a sharp Decisions section frequently outscores a stron
 implementation with none.
 
 **Correctness under awkward input — 4**
-The seed data is full of traps. Did the comma-and-quotes name survive the round trip? Does
-the Devanagari donor come back from search? Is $25,000.01 rejected and $25,000.00 accepted?
-Does an empty campaign render `0%` rather than `NaN%`?
+The seed data is full of traps. Did the comma-and-quotes name survive the import? Does the
+Devanagari donor come back from search? Is $25,000.01 rejected and $25,000.00 accepted? Do
+the two XSS payloads render as text? Does an empty campaign show `0%` rather than `NaN%`?
 
 **Tests that test the hard thing — 4**
-The authorisation test. The refund test. The money boundaries. If you attempted X1, the
-concurrency test. Forty assertions on a form validator and none on the money path scores
-low here regardless of the count.
+The three required tests, done meaningfully rather than tokenly. Anything extra counts here
+too — an assertion on the serialised anonymous payload, one end-to-end path, or, if you
+attempted X1, the concurrency test. Forty assertions on a form validator and none on the
+money path scores low regardless of the count.
 
 ## 4. Security & data integrity — 15 points
 
@@ -128,6 +129,7 @@ Over five minutes, or no video at all, caps this category at 2.
 | | |
 |---|---|
 | **X1, the dedication grid with a passing concurrency test** | **+5** |
+| The rest of the admin view — pagination, date filter, correctly quoted CSV (S0) | +2 |
 | Idempotency on donation intake, done properly (S3) | +2 |
 | Bilingual UI that survives Devanagari layout (S5) | +1 |
 | Accessibility pass with axe results in the README (X3) | +1 |
@@ -147,10 +149,10 @@ is a test that fires 20 concurrent requests at one unit and asserts one winner. 
 export is streamed and quoted. The README lists three known issues, one of which we had
 already spotted. The video is 2:40 and shows a refund correcting the total live.
 
-**A 68.** Everything runs. Must-haves nearly complete, but pagination repeats a row across
-page 2 and the CSV export shifts a column on the `Shrestha, Bijay "BJ"` row. Money is
-correct. Authorisation is correct. Tests exist but only cover the happy path. The README is
-adequate and has no Decisions section. Good submission, clear interview, specific questions.
+**A 68.** Everything runs. Must-haves complete, and they attempted the CSV export but it
+shifts a column on the `Shrestha, Bijay "BJ"` row. Money is correct. Authorisation is
+correct. The three required tests exist but each has one assertion. The README is adequate
+and has no Decisions section. Good submission, clear interview, specific questions.
 
 **A 41.** Runs after we fix an unmentioned migration step. The campaign page is attractive
 and the donation form works. Amounts are floats. The public API returns `donorName` for

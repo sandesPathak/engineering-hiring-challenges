@@ -10,15 +10,21 @@ under Docker.
 | **Stack** | Your choice, within the constraints in [`../../docs/08-node-and-tooling.md`](../../docs/08-node-and-tooling.md) |
 | **Deliverables** | A repository, a `FirstName_LastName.zip`, and a 2–3 minute video |
 
-## Read these first
+## Which files do I actually need?
 
-1. [`../../docs/00-about-us-and-the-project.md`](../../docs/00-about-us-and-the-project.md) — why this exercise looks like this
-2. [`REQUIREMENTS.md`](REQUIREMENTS.md) — **the actual specification.** Must / should / stretch
-3. [`SETUP.md`](SETUP.md) — a suggested path through the first ninety minutes
-4. [`DATA-MODEL.md`](DATA-MODEL.md) — a suggested schema, and the rules that are not negotiable
-5. [`API-CONTRACT.md`](API-CONTRACT.md) — a suggested API shape
-6. [`RUBRIC.md`](RUBRIC.md) — exactly how the 100 points are allocated
-7. [`CHECKLIST.md`](CHECKLIST.md) — tick this before you submit
+**Read two things and start.** Everything else in this folder is reference — open it at the
+moment it becomes relevant, and the requirements will tell you when.
+
+| | File | |
+|---|---|---|
+| **Read now** | [`REQUIREMENTS.md`](REQUIREMENTS.md) | The specification. Must / should / stretch. |
+| **Read now** | [`SETUP.md`](SETUP.md) | A suggested path through the day, and the environment variables. |
+| Reference | [`DATA-MODEL.md`](DATA-MODEL.md) | When you design the schema. A suggestion plus seven non-negotiable rules. |
+| Reference | [`API-CONTRACT.md`](API-CONTRACT.md) | When you write the endpoints. A suggested shape; deviate and document. |
+| Reference | [`seed/README.md`](seed/README.md) | When you write the importer. **The awkward rows and the totals you must show.** |
+| Reference | [`reference/`](reference/) | The mock payment provider, an `.env` example, a concurrency harness. |
+| Before you submit | [`CHECKLIST.md`](CHECKLIST.md) | Thirty minutes, and it protects the biggest scoring category. |
+| If curious | [`RUBRIC.md`](RUBRIC.md) | The exact points breakdown. |
 
 ---
 
@@ -62,6 +68,27 @@ Everything else is table stakes. These are the ones we look at hardest:
 3. **Refunds are correct everywhere.** A refunded donation leaves the campaign total, the
    progress bar, the donor count and the public list — in the same request, not on a nightly
    job.
+
+---
+
+## What a good 6-hour submission looks like
+
+So you can calibrate rather than guess. This is a **strong** submission, not a minimum one:
+
+- A monorepo with two apps and one genuinely shared package
+- Postgres or SQLite, migrations committed, the seed data loaded and the totals correct
+- A public campaign page with the right numbers and privacy enforced in the query
+- A donation form that works, validates on the server, and shows a receipt number
+- An admin login, a searchable list, and a refund that corrects every total
+- Three tests: money boundaries, authorisation, refund
+- `docker compose up` working from a clean clone
+- A README with a *Decisions* section and a *Known issues* section
+- Fourteen commits and a three-minute video
+
+**No stretch goals. No CSV export. No pagination. No bilingual toggle.** That submission
+scores in the eighties, and it has done before. The people who score below sixty are almost
+never the ones who ran out of time — they are the ones who started the units grid before the
+refund worked.
 
 ---
 

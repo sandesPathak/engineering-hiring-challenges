@@ -112,7 +112,7 @@ Commit after each endpoint.
 1. Campaign page: progress, totals, recent donations, empty/loading/error states
 2. Donation form: presets, custom, dedication, privacy mode, validation messages
 3. Confirmation with the receipt number
-4. Admin: login, table, filters, refund button, export link
+4. Admin: login, table, search, status filter, refund button
 
 Keep the CSS boring. Legible, responsive at 375px, done. If you catch yourself picking a
 font, stop.
@@ -135,7 +135,7 @@ Commit: `Add the docker compose stack`
 
 ## Hour 6:00 – 7:00 — tests, README, tidy
 
-- Fill the gaps in the M8 list, especially the authorisation test and the refund test
+- The three required tests: money boundaries, authorisation, refund
 - `npm run lint` — clean, not "clean with warnings"
 - Read your **whole diff**. Delete the AI narration comments, the dead helper you stopped
   using, the `console.log`
@@ -216,7 +216,5 @@ other@himalayacc.example    other12345     role: donor  (owns 2 — use this one
 - Storing money as a float "just for now"
 - Filtering anonymous donors in the React component instead of the query
 - A refund that updates the row but not the campaign total
-- Pagination written as `OFFSET page * limit` with a 1-based `page`, which silently skips
-  the first page of results
 - Committing `.env`
 - Building the stretch grid before the must-have list is finished

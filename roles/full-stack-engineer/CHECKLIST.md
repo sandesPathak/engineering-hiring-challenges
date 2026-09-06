@@ -18,8 +18,6 @@ before you record the video, so the video shows the fixed version.
 - [ ] `aangan-courtyard` shows **$43,058.00** raised — exactly, no floating-point tail
 - [ ] Refunded and failed donations are excluded from the total, the donor count and the list
 - [ ] Searching the admin list for `गुरुङ` finds the donor
-- [ ] The CSV export opens in a spreadsheet with `Shrestha, Bijay "BJ"` intact and no column shift
-- [ ] The Devanagari name is readable in the exported CSV
 - [ ] Neither `<script>alert(1)</script>` nor the `onerror` payload executes anywhere —
       public page, admin table, or CSV opened in a browser
 
@@ -48,7 +46,6 @@ before you record the video, so the video shows the fixed version.
 ## Correctness
 
 - [ ] Refunding updates the status, the audit row and every aggregate in one transaction
-- [ ] Page 2 of the admin list neither repeats nor skips a row
 - [ ] The payment decline path shows the donor something honest
 - [ ] `tok_timeout` is handled — the request does not hang forever, and the outcome is documented
 - [ ] An empty campaign renders `0%`, not `NaN%`
@@ -60,6 +57,8 @@ before you record the video, so the video shows the fixed version.
 - [ ] There is a test for authorisation
 - [ ] There is a test for the refund aggregate
 - [ ] There are money boundary tests
+- [ ] *(If I built S0)* the CSV export keeps `Shrestha, Bijay "BJ"` intact with no column
+      shift, the Devanagari name is readable, and page 2 neither repeats nor skips a row
 - [ ] `npm run lint` passes clean, not "clean with warnings"
 
 ## Documentation and history
