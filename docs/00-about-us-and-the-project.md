@@ -2,20 +2,18 @@
 
 ## How we work
 
-We are a small product studio. Six people today, and we are hiring to get to eight because
-we have signed more work than we can deliver with six. We build and maintain web platforms
-for community organisations — nonprofits, cultural centres, membership associations. The
-kind of client who has real users, real money moving through the system, a real board
-asking questions, and no in-house engineering team at all.
+We build and maintain web platforms for community organisations — nonprofits, cultural
+centres, membership associations. The kind of client who has real users, real money moving
+through the system, a board asking questions, and no in-house engineering team at all.
 
 That last part shapes everything. When we ship something broken, nobody at the client can
-fix it. They call us. So we care about tests and about boring, obvious code far more than a
-startup of our size normally would.
+fix it. They call us. So we care about tests and about boring, obvious code far more than
+most teams our size do.
 
-The team is distributed. Most of us overlap for about four hours a day. We work
-asynchronously by default, which means **written communication is a first-class engineering
-skill here**, not a soft skill. That is why the documentation and the video in this
-challenge are graded, and graded seriously.
+The team is distributed and overlaps for about four hours a day. We work asynchronously by
+default, which means **written communication is a first-class engineering skill here**, not
+a soft skill. That is why the documentation and the video in this challenge are graded, and
+graded seriously.
 
 ---
 

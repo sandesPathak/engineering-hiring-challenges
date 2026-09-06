@@ -43,31 +43,47 @@ conversation to have in the interview.
 
 ## Prefer it as one document?
 
-**[`Hiring_Handbook.pdf`](Hiring_Handbook.pdf)** — 19 pages
-covering all of the below: the rubric, the code-quality bar, the security baseline, the AI
-policy, exactly how to submit, and what the interview hour looks like. Print it, read it on
-a train, forward it to the friend who asks what a good take-home looks like.
+**[`Hiring_Handbook.pdf`](Hiring_Handbook.pdf)** — one document covering all of the
+below: the rubric, the code-quality bar, the security baseline, the AI policy, exactly how
+to submit, and what the interview hour looks like. Print it, or read it on a train.
 
 The folders below are still the authoritative version — they are the ones we keep updated.
 
-## Start here
+## Start here — you do not have to read everything
 
-Read these in order. It takes about fifteen minutes and it will save you hours.
+There are a lot of files in this repository. **Three of them are required reading**, and
+they take about fifteen minutes. Everything else is reference you open when a specific
+question comes up, and each one is linked from the place where it matters.
 
-1. [`docs/00-about-us-and-the-project.md`](docs/00-about-us-and-the-project.md) — who we are and what the real work looks like
-2. [`docs/01-how-we-evaluate.md`](docs/01-how-we-evaluate.md) — the scorecard we actually use
-3. [`docs/02-git-history-and-commits.md`](docs/02-git-history-and-commits.md) — **your commit history is graded**
-4. [`docs/03-documentation-and-comments.md`](docs/03-documentation-and-comments.md) — what we mean by "documented"
-5. [`docs/04-security-baseline.md`](docs/04-security-baseline.md) — the non-negotiable list
-6. [`docs/05-docker-and-deployment.md`](docs/05-docker-and-deployment.md) — `docker compose up` must work
-7. [`docs/06-video-walkthrough.md`](docs/06-video-walkthrough.md) — the 2–3 minute video
-8. [`docs/07-ai-coding-agents.md`](docs/07-ai-coding-agents.md) — **you may use AI. Read this before you do.**
-9. [`docs/08-node-and-tooling.md`](docs/08-node-and-tooling.md) — versions, package managers, what we can run
-10. [`docs/09-resources.md`](docs/09-resources.md) — links worth having open
-11. [`docs/10-faq.md`](docs/10-faq.md) — read this before emailing us a question
-12. [`docs/11-interview-process.md`](docs/11-interview-process.md) — what happens after you submit
+### Required — read these three, in this order
 
-Then open your role folder and follow its `README.md`.
+| | | |
+|---|---|---|
+| 1 | [`docs/00-about-us-and-the-project.md`](docs/00-about-us-and-the-project.md) | Who we are and what the real work looks like. 5 min. |
+| 2 | **Your role's `README.md`** — [full-stack](roles/full-stack-engineer/) or [QA](roles/qa-engineer/) | The brief. Start here for what you actually build. |
+| 3 | **Your role's `REQUIREMENTS.md`** | The specification. Must / should / stretch. |
+
+Then just start. Your role folder tells you when to open anything else.
+
+### Reference — open when the question comes up
+
+| File | Open it when |
+|---|---|
+| Your role's `SETUP.md` | You want a suggested path through the day |
+| Your role's `RUBRIC.md` | You want the exact points breakdown |
+| Your role's `CHECKLIST.md` | **Always — before you submit.** 30 minutes well spent |
+| [`SUBMISSION.md`](SUBMISSION.md) | You are ready to send it |
+| [`docs/04-security-baseline.md`](docs/04-security-baseline.md) | Before you write auth, validation, or anything touching money |
+| [`docs/05-docker-and-deployment.md`](docs/05-docker-and-deployment.md) | Before you write the Dockerfile |
+| [`docs/06-video-walkthrough.md`](docs/06-video-walkthrough.md) | Before you record |
+| [`docs/07-ai-coding-agents.md`](docs/07-ai-coding-agents.md) | **Before you use an AI agent.** There is a required file and one rule |
+| [`docs/01-how-we-evaluate.md`](docs/01-how-we-evaluate.md) · [`02-git-history-and-commits.md`](docs/02-git-history-and-commits.md) · [`03-documentation-and-comments.md`](docs/03-documentation-and-comments.md) | You want to know how we read a submission |
+| [`docs/08-node-and-tooling.md`](docs/08-node-and-tooling.md) | You are choosing a Node version, package manager or database |
+| [`docs/09-resources.md`](docs/09-resources.md) | You are stuck on money, concurrency, security, Unicode or testing |
+| [`docs/10-faq.md`](docs/10-faq.md) | Before you email us a question |
+| [`docs/11-interview-process.md`](docs/11-interview-process.md) | After you submit |
+
+If you would rather have it all as one document, the PDF above covers the same ground.
 
 ---
 
