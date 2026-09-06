@@ -41,6 +41,15 @@ conversation to have in the interview.
 
 ---
 
+## Prefer it as one document?
+
+**[`Hiring_Handbook.pdf`](Hiring_Handbook.pdf)** — 19 pages
+covering all of the below: the rubric, the code-quality bar, the security baseline, the AI
+policy, exactly how to submit, and what the interview hour looks like. Print it, read it on
+a train, forward it to the friend who asks what a good take-home looks like.
+
+The folders below are still the authoritative version — they are the ones we keep updated.
+
 ## Start here
 
 Read these in order. It takes about fifteen minutes and it will save you hours.
