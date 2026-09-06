@@ -1,0 +1,4 @@
+# Every file in this repository is owned by the hiring lead.
+# Branch protection requires a code owner review on any pull request into main,
+# so nothing reaches main without Sandesh reviewing it.
+*  @sandesPathak
