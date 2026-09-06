@@ -1,0 +1,16 @@
+{
+  "name": "aangan-giving-reference",
+  "version": "1.4.2",
+  "private": true,
+  "type": "module",
+  "description": "Aangan Giving — donation tracking reference build, used for QA assessment",
+  "engines": { "node": ">=22.11" },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "reset": "node src/reset.js"
+  },
+  "dependencies": {
+    "express": "4.21.2"
+  }
+}

@@ -1,0 +1,18 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: 4000
+      DB_PATH: /app/data/aangan.sqlite
+      # Seconds a guest must wait between donations from the same IP.
+      # This is intentional product behaviour, not a defect. See SPEC.md §7.
+      GUEST_COOLDOWN_SECONDS: 120
+      ORG_TIMEZONE: America/Chicago
+    volumes:
+      - appdata:/app/data
+
+volumes:
+  appdata:

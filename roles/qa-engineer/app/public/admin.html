@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Staff — Donations | Himalaya Cultural Centre</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand">Himalaya Cultural Centre — Staff</div>
+    <nav><a href="/">Public page</a> <a href="#" id="signout">Sign out</a></nav>
+  </header>
+
+  <main>
+    <section id="loginPane">
+      <h1>Sign in</h1>
+      <div class="card" style="max-width:420px">
+        <div class="row"><div><span class="l">Email</span><input id="email" type="text"></div></div>
+        <div class="row"><div><span class="l">Password</span><input id="password" type="password"></div></div>
+        <button id="signin">Sign in</button>
+        <span class="err" id="loginError"></span>
+      </div>
+    </section>
+
+    <section id="adminPane" class="hidden">
+      <h1>Donations</h1>
+
+      <div class="stats" id="stats"></div>
+
+      <div class="row">
+        <div><span class="l">Search</span><input id="q" type="text" placeholder="Name or email"></div>
+        <div>
+          <span class="l">Status</span>
+          <select id="status">
+            <option value="">All</option>
+            <option value="completed">Completed</option>
+            <option value="refunded">Refunded</option>
+            <option value="failed">Failed</option>
+          </select>
+        </div>
+        <div><span class="l">From</span><input id="from" type="date"></div>
+        <div><span class="l">To</span><input id="to" type="date"></div>
+      </div>
+      <div class="row">
+        <button id="apply">Apply</button>
+        <button class="ghost" id="export">Export CSV</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Receipt</th><th>Donor</th><th>Campaign</th><th>Amount</th>
+            <th>Status</th><th>Dedication</th><th>Date</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+
+      <div class="row" style="margin-top:16px;align-items:center">
+        <button class="ghost" id="prev">Previous</button>
+        <span id="pageInfo" style="flex:0 0 auto"></span>
+        <button class="ghost" id="next">Next</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/admin.js"></script>
+</body>
+</html>
