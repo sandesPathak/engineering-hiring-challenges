@@ -4,10 +4,14 @@ Welcome, and thank you for the time you are about to spend on this.
 
 This repository holds the take-home exercises for two open roles:
 
-| Role | Folder | What you build |
+| Role | What you build | **The spec — what you must deliver** |
 |---|---|---|
-| **Full-Stack Engineer** | [`roles/full-stack-engineer/`](roles/full-stack-engineer/) | A donation tracking page — backend, frontend, database, Docker — in a monorepo |
-| **QA Engineer** | [`roles/qa-engineer/`](roles/qa-engineer/) | Find the defects we planted in a running donation app, then automate the regression suite |
+| **Full-Stack Engineer** | A donation tracking page — backend, frontend, database, Docker — in a monorepo | **[`roles/full-stack-engineer/REQUIREMENTS.md`](roles/full-stack-engineer/REQUIREMENTS.md)** |
+| **QA Engineer** | Find the defects we planted in a running donation app, then automate the regression suite | **[`roles/qa-engineer/REQUIREMENTS.md`](roles/qa-engineer/REQUIREMENTS.md)** |
+
+**That third column is the instruction guide.** It is the numbered list of everything you
+have to build, split into must-have, should-have and stretch, and it is what we score you
+against. If you read nothing else in this repository, read the one for your role.
 
 You only do the one you applied for. If you applied for both, do the one you want to be
 hired for first, and tell us in your email that the second one is a bonus.
@@ -86,8 +90,8 @@ question comes up, and each one is linked from the place where it matters.
 | | | |
 |---|---|---|
 | 1 | [`docs/00-about-us-and-the-project.md`](docs/00-about-us-and-the-project.md) | Who we are and what the real work looks like. 5 min. |
-| 2 | **Your role's `README.md`** — [full-stack](roles/full-stack-engineer/) or [QA](roles/qa-engineer/) | The brief. Start here for what you actually build. |
-| 3 | **Your role's `REQUIREMENTS.md`** | The specification. Must / should / stretch. |
+| 2 | Your role's **`README.md`** — [full-stack](roles/full-stack-engineer/README.md) · [QA](roles/qa-engineer/README.md) | The brief. The scenario, and what a good submission looks like. 5 min. |
+| 3 | Your role's **`REQUIREMENTS.md`** — [full-stack](roles/full-stack-engineer/REQUIREMENTS.md) · [QA](roles/qa-engineer/REQUIREMENTS.md) | **The instruction guide.** Numbered, must / should / stretch. This is the one you build from. |
 
 Then just start. Your role folder tells you when to open anything else.
 
