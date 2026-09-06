@@ -1,32 +1,27 @@
-const $ = (id) => document.getElementById(id);
-const money = (n) => `$${Number(n).toFixed(2)}`;
+import { api, post } from './js/api.js';
+import { session } from './js/session.js';
+import { mountAccount, openSignIn } from './js/account.js';
+import { $, el, toast, setNotice, whileBusy } from './js/ui.js';
+import { money, hoursBetween, longDate, timeRange } from './js/format.js';
 
-let token = sessionStorage.getItem('token') ?? null;
 let spaces = [];
 let addons = [];
 
-async function api(path, options = {}) {
-  const headers = { 'content-type': 'application/json', ...(options.headers ?? {}) };
-  if (token) headers.authorization = `Bearer ${token}`;
-  const res = await fetch(path, { ...options, headers });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(body.error ?? `Request failed (${res.status})`);
-  return body;
-}
+/* ------------------------------------------------------------------ spaces */
 
-function spaceCard(s) {
-  const el = document.createElement('div');
-  el.className = `card${s.isActive ? '' : ' closed'}`;
-  el.innerHTML = `
-    <h3></h3>
-    <p></p>
-    <div class="meta"></div>`;
-  el.querySelector('h3').textContent = s.name;
-  el.querySelector('p').textContent = s.description;
-  el.querySelector('.meta').textContent = s.isActive
-    ? `Up to ${s.capacity} · ${money(s.hourlyRate)}/hour · ${money(s.deposit)} deposit`
-    : 'Not currently bookable';
-  return el;
+function spaceCard(space) {
+  const card = el('div', { className: `card${space.isActive ? '' : ' closed'}` });
+  card.append(
+    el('h3', {}, space.name),
+    el('p', {}, space.description),
+    el('div.meta', {},
+      space.isActive
+        ? el('span', {},
+            el('span.rate', {}, `${money(space.hourlyRate)}/hour`),
+            ` · up to ${space.capacity} · ${money(space.deposit)} deposit`)
+        : 'Not currently bookable'),
+  );
+  return card;
 }
 
 async function loadSpaces() {
@@ -35,63 +30,74 @@ async function loadSpaces() {
 
   const wrap = $('spaces');
   wrap.textContent = '';
-  for (const s of spaces) wrap.appendChild(spaceCard(s));
+  for (const space of spaces) wrap.appendChild(spaceCard(space));
 
   for (const select of [$('availSpace'), $('fSpace')]) {
     select.textContent = '';
-    for (const s of spaces.filter((x) => x.isActive)) {
-      const opt = document.createElement('option');
-      opt.value = s.slug;
-      opt.textContent = s.name;
-      select.appendChild(opt);
+    for (const space of spaces.filter((s) => s.isActive)) {
+      select.appendChild(el('option', { value: space.slug }, space.name));
     }
   }
 }
 
+/* ------------------------------------------------------------------ add-ons */
+
 async function loadAddons(slug) {
   const data = await api(`/api/spaces/${slug}`);
   addons = data.addons;
+
   const row = $('addonRow');
   row.textContent = '';
-  for (const a of addons) {
-    const div = document.createElement('div');
+  for (const addon of addons) {
     const label = document.createElement('label');
-    label.textContent = `${a.name} — ${money(a.unitPrice)}`;
+    label.textContent = `${addon.name} — ${money(addon.unitPrice)}`;
+
     const input = document.createElement('input');
     input.type = 'number';
     input.min = '0';
     input.value = '0';
-    input.dataset.code = a.code;
+    input.dataset.code = addon.code;
     input.className = 'addon';
     input.addEventListener('input', renderQuote);
-    div.append(label, input);
-    row.appendChild(div);
+
+    const cell = document.createElement('div');
+    cell.append(label, input);
+    row.appendChild(cell);
   }
   renderQuote();
 }
 
 function selectedAddons() {
   return [...document.querySelectorAll('.addon')]
-    .map((i) => ({ code: i.dataset.code, quantity: Number(i.value) }))
-    .filter((l) => l.quantity !== 0);
+    .map((input) => ({ code: input.dataset.code, quantity: Number(input.value) }))
+    .filter((line) => line.quantity !== 0);
 }
 
-function hoursBetween(start, end) {
-  const [sh, sm] = start.split(':').map(Number);
-  const [eh, em] = end.split(':').map(Number);
-  return eh + em / 60 - (sh + sm / 60);
-}
+/* -------------------------------------------------------------------- quote */
 
 function renderQuote() {
   const space = spaces.find((s) => s.slug === $('fSpace').value);
   if (!space) return;
+
   const hours = hoursBetween($('fStart').value, $('fEnd').value);
-  let total = hours * space.hourlyRate;
+  const hire = hours * space.hourlyRate;
+  let total = hire;
   for (const line of selectedAddons()) {
     total += addons.find((a) => a.code === line.code).unitPrice * line.quantity;
   }
-  $('quote').textContent = `${hours} hours · hire ${money(hours * space.hourlyRate)} · total ${money(total)} · deposit ${money(space.deposit)} held`;
+
+  const figure = (label, value) => el('div', {}, el('div.k', {}, label), el('div.v', {}, value));
+  const quote = $('quote');
+  quote.textContent = '';
+  quote.append(
+    figure('Hours', String(hours)),
+    figure('Hire', money(hire)),
+    figure('Total', money(total)),
+    figure('Deposit held', money(space.deposit)),
+  );
 }
+
+/* ------------------------------------------------------------- availability */
 
 async function loadAvailability() {
   const slug = $('availSpace').value;
@@ -99,7 +105,7 @@ async function loadAvailability() {
   if (!slug || !date) return;
 
   const data = await api(`/api/spaces/${slug}/availability?date=${date}`);
-  $('availNote').textContent = data.closed ? `Closed: ${data.reason}` : '';
+  setNotice($('availNote'), data.closed ? `Closed: ${data.reason}` : '', 'info');
 
   const slots = $('slots');
   slots.textContent = '';
@@ -113,63 +119,89 @@ async function loadAvailability() {
   }
 }
 
+/* ---------------------------------------------------------------- calendar */
+
 async function loadCalendar() {
   const data = await api('/api/calendar?from=2026-09-01&to=2026-12-31');
   const wrap = $('calendar');
   wrap.textContent = '';
 
-  for (const e of data.events.slice(0, 25)) {
-    const row = document.createElement('div');
-    row.className = `event${e.visibility === 'private' ? ' private' : ''}`;
-    row.innerHTML = `
-      <span class="when"></span>
-      <div class="what"></div>
-      <div class="where"></div>
-      <div class="who"></div>`;
-    row.querySelector('.when').textContent = `${e.date} ${e.start}–${e.end}`;
-    row.querySelector('.what').textContent = e.title;
-    row.querySelector('.where').textContent = e.space;
-    row.querySelector('.who').textContent = `Booked by ${e.bookedBy}`;
+  if (!data.events.length) {
+    wrap.appendChild(el('p.empty', {}, 'Nothing on the calendar for this period.'));
+    return;
+  }
+
+  for (const event of data.events.slice(0, 25)) {
+    const row = el('div', { className: `event${event.visibility === 'private' ? ' private' : ''}` });
+    row.append(
+      el('span.when', {}, `${longDate(event.date)} · ${timeRange(event.start, event.end)}`),
+      el('div.what', {}, event.title),
+      el('div.where', {}, event.space),
+      el('div.who', {}, `Booked by ${event.bookedBy}`),
+    );
     wrap.appendChild(row);
   }
 }
 
-function showForm() {
-  $('signinPrompt').classList.add('hidden');
-  $('requestForm').classList.remove('hidden');
-  loadAddons($('fSpace').value);
+/* ------------------------------------------------------------ own bookings */
+
+function cancelButton(booking) {
+  const button = el('button.danger.small', { type: 'button' }, 'Cancel');
+  button.addEventListener('click', () =>
+    whileBusy(button, 'Cancelling…', async () => {
+      try {
+        await post(`/api/my/bookings/${booking.reference}/cancel`);
+        toast(`${booking.reference} cancelled`);
+        await Promise.all([loadMyBookings(), loadAvailability(), loadCalendar()]);
+      } catch (err) {
+        toast(err.message, 'bad');
+      }
+    }));
+  return button;
 }
 
-$('signin').addEventListener('click', async () => {
-  $('signinErr').textContent = '';
-  try {
-    const data = await api('/api/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({ email: $('email').value, password: $('password').value }),
-    });
-    token = data.token;
-    sessionStorage.setItem('token', token);
-    showForm();
-  } catch (err) {
-    $('signinErr').textContent = err.message;
+async function loadMyBookings() {
+  if (!session.token()) return;
+
+  const data = await api('/api/my/bookings');
+  const wrap = $('mine');
+  wrap.textContent = '';
+
+  if (!data.bookings.length) {
+    wrap.appendChild(el('div.card.empty', {}, 'You have not requested a space yet.'));
+    return;
   }
-});
+
+  for (const booking of data.bookings) {
+    wrap.appendChild(
+      el('div.card.item', {},
+        el('div', {},
+          el('div.ref', {}, booking.reference),
+          el('div.detail', {}, `${booking.space} · ${longDate(booking.date)} · ${timeRange(booking.start, booking.end)}`)),
+        el('div.right', {},
+          el('span', { className: `pill ${booking.status}` }, booking.status),
+          cancelButton(booking))),
+    );
+  }
+}
+
+/* ------------------------------------------------------------- the request */
 
 $('requestForm').addEventListener('submit', async (event) => {
   event.preventDefault();
-  $('formErr').textContent = '';
+  setNotice($('formErr'), '');
 
   const space = spaces.find((s) => s.slug === $('fSpace').value);
   const attendees = Number($('fAttendees').value);
   if (attendees > space.capacity) {
-    $('formErr').textContent = `${space.name} holds ${space.capacity} people.`;
+    setNotice($('formErr'), `${space.name} holds ${space.capacity} people.`);
     return;
   }
 
+  const button = event.submitter ?? $('requestForm').querySelector('button[type=submit]');
   try {
-    const data = await api('/api/bookings', {
-      method: 'POST',
-      body: JSON.stringify({
+    await whileBusy(button, 'Sending…', async () => {
+      const data = await post('/api/bookings', {
         spaceSlug: $('fSpace').value,
         eventDate: $('fDate').value,
         startTime: $('fStart').value,
@@ -179,23 +211,39 @@ $('requestForm').addEventListener('submit', async (event) => {
         notes: $('fNotes').value,
         visibility: $('fVisibility').value,
         addons: selectedAddons(),
-      }),
+      });
+      toast(`Request ${data.reference} sent — ${money(data.total)}`);
     });
-    $('quote').textContent = `Request ${data.reference} sent — ${data.message} Total ${money(data.total)}.`;
-    loadAvailability();
-    loadCalendar();
+    await Promise.all([loadMyBookings(), loadAvailability(), loadCalendar()]);
   } catch (err) {
-    $('formErr').textContent = err.message;
+    setNotice($('formErr'), err.message);
   }
 });
 
+/* -------------------------------------------------------------- page wiring */
+
+$('lockSignin').addEventListener('click', (event) => openSignIn(event.currentTarget));
+
 for (const id of ['availSpace', 'availDate']) $(id).addEventListener('change', loadAvailability);
-for (const id of ['fStart', 'fEnd', 'fSpace']) $(id).addEventListener('change', renderQuote);
-$('fSpace').addEventListener('change', () => loadAddons($('fSpace').value));
+for (const id of ['fStart', 'fEnd']) $(id).addEventListener('change', renderQuote);
+$('fSpace').addEventListener('change', () => {
+  renderQuote();
+  loadAddons($('fSpace').value);
+});
+
+function reflectSession(member) {
+  $('lockPanel').classList.toggle('hidden', Boolean(member));
+  $('requestForm').classList.toggle('hidden', !member);
+  $('mineBlock').classList.toggle('hidden', !member);
+  if (!member) return;
+  loadAddons($('fSpace').value);
+  loadMyBookings();
+}
 
 (async function start() {
+  mountAccount();
   await loadSpaces();
+  session.subscribe((state) => reflectSession(state?.member ?? null));
   await loadAvailability();
   await loadCalendar();
-  if (token) showForm();
 })();

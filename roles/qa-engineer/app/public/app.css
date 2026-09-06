@@ -1,0 +1,110 @@
+/* Page-specific rules: the spaces catalogue, the availability grid, the
+   what's-on list, the office console. Shared components are in styles.css. */
+
+/* ---------------------------------------------------------------- hero */
+
+.hero {
+  background: linear-gradient(160deg, #fff8f0, #fbf9f6 60%);
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  padding: 26px 24px; margin-bottom: 8px;
+}
+.hero h1 { margin-bottom: 8px; }
+.hero .story { font-size: 17px; }
+
+/* ------------------------------------------------------------ spaces grid */
+
+.spaces { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.spaces .card { display: flex; flex-direction: column; }
+.spaces .card h3 { margin-bottom: 6px; }
+.spaces .card p { margin: 0 0 14px; font-size: 13.5px; color: var(--ink-soft); flex: 1; }
+.spaces .card .meta {
+  font-size: 12.5px; color: var(--ink-soft); padding-top: 12px;
+  border-top: 1px solid var(--line-soft); font-variant-numeric: tabular-nums;
+}
+.spaces .card .rate { font-weight: 650; color: var(--ink); }
+.spaces .card.closed { background: var(--bg); box-shadow: none; }
+.spaces .card.closed h3, .spaces .card.closed p { color: var(--muted); }
+
+/* -------------------------------------------------------- availability grid */
+
+.slots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 16px; }
+.slots div {
+  padding: 9px 4px; text-align: center; font-size: 11.5px;
+  border: 1px solid var(--line); border-radius: var(--r-sm);
+  background: #fff; color: var(--ink-soft); font-variant-numeric: tabular-nums;
+}
+.slots div.taken { background: var(--brand); color: #fff; border-color: var(--brand); }
+
+.legend { display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--muted); }
+.legend span { display: flex; align-items: center; gap: 6px; }
+.legend i { width: 11px; height: 11px; border-radius: 3px; border: 1px solid var(--line); background: #fff; }
+.legend i.taken { background: var(--brand); border-color: var(--brand); }
+
+/* --------------------------------------------------------- what's on list */
+
+.event { padding: 13px 0; border-bottom: 1px solid var(--line-soft); }
+.event:first-child { padding-top: 0; }
+.event:last-child { border-bottom: 0; padding-bottom: 0; }
+.event .when { float: right; font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; }
+.event .what { font-weight: 600; }
+.event .where { color: var(--ink-soft); font-size: 13.5px; }
+.event .who { font-size: 13px; color: var(--muted); }
+.event.private .who { display: none; }
+
+/* ------------------------------------------------------------- quote strip */
+
+.quote {
+  display: flex; flex-wrap: wrap; gap: 22px; padding: 14px 16px; margin-top: 4px;
+  background: var(--brand-wash); border: 1px solid #f0dccb; border-radius: var(--r-md);
+}
+.quote .k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--brand-ink); }
+.quote .v { font-size: 17px; font-weight: 650; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------- add-on grid */
+
+.addons { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+.addons > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.addons label { font-size: 13px; color: var(--ink-soft); }
+.addons input { width: 72px; flex: none; text-align: center; }
+
+/* --------------------------------------------------------- my bookings */
+
+.mine { display: grid; gap: 10px; }
+.mine .item { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 13px 16px; }
+.mine .item .ref { font-weight: 650; font-variant-numeric: tabular-nums; }
+.mine .item .detail { color: var(--ink-soft); font-size: 13.5px; }
+.mine .item .right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+/* ---------------------------------------------------------- office console */
+
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px;
+  background: var(--line); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+.stat { background: var(--card); padding: 16px 18px; }
+.stat .n { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere; }
+.stat .l { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-top: 2px; }
+
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+.filters .wide { grid-column: span 2; }
+.filter-foot { display: flex; align-items: center; gap: 10px; margin-top: 16px;
+  padding-top: 16px; border-top: 1px solid var(--line-soft); flex-wrap: wrap; }
+.filter-foot .spacer { margin-left: auto; }
+
+.table-wrap table { min-width: 960px; }
+.table-wrap td:nth-child(1), .table-wrap td:nth-child(4), .table-wrap td:nth-child(5),
+.table-wrap td:nth-child(3), .table-wrap td:nth-child(6), .table-wrap td:nth-child(7),
+.table-wrap td:nth-child(9) { white-space: nowrap; }
+/* A seeded note is 280 unbroken characters. Without this the cell sets the table's
+   width and the console needs a horizontal scroll to reach the decision buttons. */
+.table-wrap td:nth-child(8) { overflow-wrap: anywhere; min-width: 170px; max-width: 340px; }
+.table-wrap td:nth-child(2) { min-width: 210px; }
+
+.pager { display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  border-top: 1px solid var(--line); background: var(--bg); font-size: 13px; color: var(--ink-soft); }
+.pager .spacer { margin-left: auto; }
+
+@media (max-width: 620px) {
+  .slots { grid-template-columns: repeat(4, 1fr); }
+  .event .when { float: none; display: block; }
+  .filters .wide { grid-column: span 1; }
+}

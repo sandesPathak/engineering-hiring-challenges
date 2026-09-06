@@ -3,68 +3,151 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Staff — Bookings | Himalaya Cultural Centre</title>
+  <title>Office console | Himalaya Cultural Centre</title>
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/app.css" />
 </head>
 <body>
-  <header>
-    <div class="brand">Himalaya Cultural Centre — Staff</div>
-    <nav>
-      <a href="/">Public page</a>
-      <a href="#" id="signout">Sign out</a>
-    </nav>
+  <header class="masthead">
+    <div class="inner">
+      <a class="brand" href="/">
+        <span class="mark" aria-hidden="true">हि</span>
+        <span>
+          <span class="name">Himalaya Cultural Centre</span>
+          <span class="sub">Office console</span>
+        </span>
+      </a>
+      <nav aria-label="Main">
+        <a href="/">Book a space</a>
+        <a href="/staff.html" aria-current="page">Office</a>
+      </nav>
+      <div class="account" id="account"></div>
+    </div>
   </header>
 
-  <main>
-    <div id="loginView">
-      <h1>Sign in</h1>
-      <div class="card">
-        <div><label for="email">Email</label><input id="email" /></div>
-        <div><label for="password">Password</label><input id="password" type="password" /></div>
-        <button id="signin">Sign in</button>
-        <div class="err" id="loginErr"></div>
-      </div>
+  <main class="wide">
+    <div class="page-head">
+      <h1>Bookings</h1>
+      <p class="story">
+        Every request the centre has received. Approve or reject what is waiting, and export
+        the current filter for the committee.
+      </p>
+    </div>
+
+    <div class="card lock" id="lockPanel">
+      <div class="glyph" aria-hidden="true">🔒</div>
+      <h3 id="lockTitle">Staff sign-in required</h3>
+      <p id="lockBody">The office console is limited to front desk accounts.</p>
+      <button type="button" id="lockSignin">Sign in</button>
     </div>
 
     <div id="consoleView" class="hidden">
-      <h1>Bookings</h1>
       <div class="stats" id="stats"></div>
 
-      <div class="row">
-        <div><label for="q">Search</label><input id="q" placeholder="Name, email or reference" /></div>
-        <div>
-          <label for="status">Status</label>
-          <select id="status">
-            <option value="all">All</option>
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-            <option value="rejected">Rejected</option>
-          </select>
+      <section class="block">
+        <div class="block-head">
+          <h2>Filter</h2>
+          <span class="hint" id="resultCount"></span>
         </div>
-        <div><label for="space">Space</label><select id="space"><option value="">All spaces</option></select></div>
-      </div>
-      <div class="row">
-        <div><label for="from">From</label><input type="date" id="from" /></div>
-        <div><label for="to">To</label><input type="date" id="to" /></div>
-      </div>
-      <button id="apply">Apply</button>
-      <button class="ghost" id="csv">Export CSV</button>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Reference</th><th>Member</th><th>Space</th><th>When</th>
-            <th>Hours</th><th>Fee</th><th>Status</th><th>Purpose</th><th></th>
-          </tr>
-        </thead>
-        <tbody id="rows"></tbody>
-      </table>
-      <div class="err" id="tableErr"></div>
+        <div class="card">
+          <div class="filters">
+            <div class="field wide">
+              <label for="q">Search</label>
+              <input id="q" placeholder="Name, email or reference" />
+            </div>
+            <div class="field">
+              <label for="status">Status</label>
+              <select id="status">
+                <option value="all">All statuses</option>
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="space">Space</label>
+              <select id="space"><option value="">All spaces</option></select>
+            </div>
+            <div class="field">
+              <label for="from">From</label>
+              <input type="date" id="from" />
+            </div>
+            <div class="field">
+              <label for="to">To</label>
+              <input type="date" id="to" />
+            </div>
+            <div class="field">
+              <label for="sort">Sort by</label>
+              <select id="sort">
+                <option value="event_date">Event date</option>
+                <option value="created_at">Requested</option>
+                <option value="attendees">Attendees</option>
+                <option value="status">Status</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="dir">Order</label>
+              <select id="dir">
+                <option value="desc">Newest first</option>
+                <option value="asc">Oldest first</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="filter-foot">
+            <button type="button" id="apply">Apply</button>
+            <button type="button" class="ghost" id="reset">Reset</button>
+            <span class="spacer"></span>
+            <button type="button" class="ghost" id="csv">Export CSV</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <div class="block-head"><h2>Results</h2></div>
+        <div class="card flush">
+          <div class="table-wrap">
+            <table>
+              <caption class="sr-only">Booking requests matching the current filter</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Reference</th>
+                  <th scope="col">Member</th>
+                  <th scope="col">Space</th>
+                  <th scope="col">When</th>
+                  <th scope="col">Hours</th>
+                  <th scope="col">Fee</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Purpose</th>
+                  <th scope="col"><span class="sr-only">Decision</span></th>
+                </tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+          <div class="empty hidden" id="emptyState">No bookings match this filter.</div>
+          <div class="pager">
+            <span id="pageInfo" class="nums"></span>
+            <span class="spacer"></span>
+            <label for="pageSize" class="muted" style="font-size:13px">Per page</label>
+            <select id="pageSize" style="width:auto">
+              <option>10</option>
+              <option selected>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+            <button type="button" class="ghost small" id="prev">Previous</button>
+            <button type="button" class="ghost small" id="next">Next</button>
+          </div>
+        </div>
+        <p class="notice" id="tableErr" role="alert"></p>
+      </section>
     </div>
   </main>
 
-  <script src="/staff.js"></script>
+  <script type="module" src="/staff.js"></script>
 </body>
 </html>

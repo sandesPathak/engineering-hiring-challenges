@@ -5,74 +5,108 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book a space | Himalaya Cultural Centre</title>
   <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/app.css" />
 </head>
 <body>
-  <header>
-    <div class="brand">Himalaya Cultural Centre</div>
-    <nav>
-      <a href="/">Book a space</a>
-      <a href="/staff.html">Staff</a>
-    </nav>
+  <header class="masthead">
+    <div class="inner">
+      <a class="brand" href="/">
+        <span class="mark" aria-hidden="true">हि</span>
+        <span>
+          <span class="name">Himalaya Cultural Centre</span>
+          <span class="sub">Sabhaghar Booking</span>
+        </span>
+      </a>
+      <nav aria-label="Main">
+        <a href="/" aria-current="page">Book a space</a>
+        <a href="/staff.html">Office</a>
+      </nav>
+      <div class="account" id="account"></div>
+    </div>
   </header>
 
-  <main>
-    <h1>Book a space</h1>
-    <p class="story">
-      Halls, the courtyard, the kitchen and the classrooms are available to members for
-      weddings, ceremonies, classes and meetings. Requests are reviewed by the office and
-      confirmed within two working days.
-    </p>
-
-    <h2>Spaces</h2>
-    <div class="spaces" id="spaces"></div>
-
-    <h2>Availability</h2>
-    <div class="card">
-      <div class="row">
-        <div>
-          <label for="availDate">Date</label>
-          <input type="date" id="availDate" value="2026-11-07" />
-        </div>
-        <div>
-          <label for="availSpace">Space</label>
-          <select id="availSpace"></select>
-        </div>
-      </div>
-      <div id="availNote" class="err"></div>
-      <div class="slots" id="slots"></div>
+  <main class="narrow">
+    <div class="hero">
+      <h1>Book a space</h1>
+      <p class="story">
+        The hall, the courtyard, the kitchen and the classrooms are available to members for
+        weddings, ceremonies, classes and meetings. Requests are reviewed by the office and
+        confirmed within two working days.
+      </p>
     </div>
 
-    <h2>Request a booking</h2>
-    <div class="card" id="requestCard">
-      <div id="signinPrompt">
-        <p class="story">Members sign in to request a space.</p>
+    <section class="block">
+      <div class="block-head">
+        <h2>Spaces</h2>
+        <span class="hint">Hire rate is per hour. The deposit is refundable.</span>
+      </div>
+      <div class="spaces" id="spaces"></div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <h2>Availability</h2>
+        <span class="hint">The building is open 09:00 – 23:00</span>
+      </div>
+      <div class="card">
         <div class="row">
-          <div><label for="email">Email</label><input id="email" value="member@himalayacc.example" /></div>
-          <div><label for="password">Password</label><input id="password" type="password" value="member12345" /></div>
+          <div class="field">
+            <label for="availSpace">Space</label>
+            <select id="availSpace"></select>
+          </div>
+          <div class="field">
+            <label for="availDate">Date</label>
+            <input type="date" id="availDate" value="2026-11-07" />
+          </div>
         </div>
-        <button id="signin">Sign in</button>
-        <div class="err" id="signinErr"></div>
+        <p class="notice" id="availNote" role="status"></p>
+        <div class="slots" id="slots"></div>
+        <div class="legend">
+          <span><i></i> Free</span>
+          <span><i class="taken"></i> Taken</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <h2>Request a booking</h2>
+        <span class="hint">Half-hour blocks · at least 30 minutes</span>
       </div>
 
-      <form id="requestForm" class="hidden">
+      <div class="card lock" id="lockPanel">
+        <div class="glyph" aria-hidden="true">🔒</div>
+        <h3>Members only</h3>
+        <p>Sign in with your membership email to send a request to the office.</p>
+        <button type="button" id="lockSignin">Sign in to continue</button>
+      </div>
+
+      <form class="card hidden" id="requestForm">
         <div class="row">
-          <div>
+          <div class="field">
             <label for="fSpace">Space</label>
             <select id="fSpace"></select>
           </div>
-          <div>
+          <div class="field">
             <label for="fDate">Event date</label>
             <input type="date" id="fDate" value="2026-11-14" />
           </div>
+          <div class="field">
+            <label for="fAttendees">Attendees</label>
+            <input id="fAttendees" type="number" min="1" value="40" />
+          </div>
         </div>
+
         <div class="row">
-          <div><label for="fStart">Start</label><input id="fStart" value="10:00" /></div>
-          <div><label for="fEnd">End</label><input id="fEnd" value="14:00" /></div>
-          <div><label for="fAttendees">Attendees</label><input id="fAttendees" type="number" value="40" /></div>
-        </div>
-        <div class="row">
-          <div><label for="fPurpose">What is it for</label><input id="fPurpose" value="Community meeting" /></div>
-          <div>
+          <div class="field">
+            <label for="fStart">Start</label>
+            <input id="fStart" value="10:00" />
+          </div>
+          <div class="field">
+            <label for="fEnd">End</label>
+            <input id="fEnd" value="14:00" />
+          </div>
+          <div class="field">
             <label for="fVisibility">Show on the public calendar</label>
             <select id="fVisibility">
               <option value="public">Yes — show the event</option>
@@ -80,23 +114,56 @@
             </select>
           </div>
         </div>
+
         <div class="row">
-          <div>
-            <label for="fNotes">Notes for the office (optional)</label>
-            <textarea id="fNotes" rows="2"></textarea>
+          <div class="field">
+            <label for="fPurpose">What is it for</label>
+            <input id="fPurpose" value="Community meeting" />
           </div>
         </div>
-        <div class="row" id="addonRow"></div>
-        <p class="story" id="quote"></p>
-        <button type="submit">Send request</button>
-        <div class="err" id="formErr"></div>
-      </form>
-    </div>
 
-    <h2>What is on</h2>
-    <div class="card" id="calendar"></div>
+        <div class="row">
+          <div class="field">
+            <label for="fNotes">Notes for the office</label>
+            <textarea id="fNotes" rows="2" placeholder="Anything the caretaker should know"></textarea>
+            <p class="help">Optional.</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <span class="label">Add-ons</span>
+            <div class="addons" id="addonRow"></div>
+          </div>
+        </div>
+
+        <div class="quote" id="quote"></div>
+        <p class="notice" id="formErr" role="alert"></p>
+
+        <div class="actions" style="margin-top:16px">
+          <button type="submit">Send request</button>
+          <span class="muted" style="font-size:13px">The office decides. Nothing is confirmed automatically.</span>
+        </div>
+      </form>
+    </section>
+
+    <section class="block hidden" id="mineBlock">
+      <div class="block-head">
+        <h2>Your bookings</h2>
+        <span class="hint">Cancelling releases the deposit</span>
+      </div>
+      <div class="mine" id="mine"></div>
+    </section>
+
+    <section class="block">
+      <div class="block-head">
+        <h2>What is on</h2>
+        <span class="hint">Public calendar</span>
+      </div>
+      <div class="card" id="calendar"></div>
+    </section>
   </main>
 
-  <script src="/app.js"></script>
+  <script type="module" src="/app.js"></script>
 </body>
 </html>
