@@ -64,14 +64,24 @@ Every seeded member also exists as an account, but without a password.
 
 | Page | What it is |
 |---|---|
-| `http://localhost:4000/` | Members: browse spaces, check availability, request a booking, cancel their own, see what is on |
-| `http://localhost:4000/staff.html` | The office: every booking, search, filters, approve, reject, CSV export |
+| `http://localhost:4000/` | Members |
+| `http://localhost:4000/staff.html` | The office |
 
-Both pages share one sign-in dialog, opened from the masthead or from either page's
-"members only" panel. It carries buttons that fill in the three accounts above, so you do
-not have to retype them. The session lives in `sessionStorage` for the life of the tab —
-open a second tab to be two different people at once, which is how you will reproduce
-anything involving one member and another member's data.
+Each page has its own sections in the left-hand nav, and each section has its own URL, so
+you can link a test straight at the view you mean:
+
+| Member | | Office | |
+|---|---|---|---|
+| `#/book` | Choose a space, check what is taken, send a request | `#/today` | Requests awaiting a decision |
+| `#/my-bookings` | Your own bookings, and cancelling one | `#/bookings` | Every booking: search, filters, CSV export |
+| `#/whats-on` | The public calendar | `#/figures` | Hours, fees, deposits, utilisation |
+| `#/spaces` | Capacities, rates and deposits | `#/audit` | Who approved or rejected what |
+
+Both pages share one sign-in dialog, opened from the masthead or from the "members only"
+panel. It carries buttons that fill in the three accounts above, so you do not have to
+retype them. The session lives in `sessionStorage` for the life of the tab — open a second
+tab to be two different people at once, which is how you will reproduce anything involving
+one member and another member's data.
 
 ## The API
 

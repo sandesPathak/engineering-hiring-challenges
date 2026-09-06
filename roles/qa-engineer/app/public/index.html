@@ -10,159 +10,204 @@
 <body>
   <header class="masthead">
     <div class="inner">
-      <a class="brand" href="/">
+      <a class="brand" href="#/book">
         <span class="mark" aria-hidden="true">हि</span>
         <span>
           <span class="name">Himalaya Cultural Centre</span>
           <span class="sub">Sabhaghar Booking</span>
         </span>
       </a>
-      <nav aria-label="Main">
-        <a href="/" aria-current="page">Book a space</a>
+      <nav class="switcher" aria-label="Site">
+        <a href="/" aria-current="page">Members</a>
         <a href="/staff.html">Office</a>
       </nav>
       <div class="account" id="account"></div>
     </div>
   </header>
 
-  <main class="narrow">
-    <div class="hero">
-      <h1>Book a space</h1>
-      <p class="story">
-        The hall, the courtyard, the kitchen and the classrooms are available to members for
-        weddings, ceremonies, classes and meetings. Requests are reviewed by the office and
-        confirmed within two working days.
-      </p>
-    </div>
+  <div class="shell">
+    <nav class="sidebar" aria-label="Sections">
+      <p class="nav-label">Booking</p>
+      <a class="nav-item" href="#/book" data-route="book">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v15M15 11h3a2 2 0 0 1 2 2v8M4 21h17M8 8h3M8 12h3M8 16h3"/></svg>
+        Book a space
+      </a>
+      <a class="nav-item" href="#/my-bookings" data-route="my-bookings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/><path d="M12 6v2M12 11v2M12 16v2"/></svg>
+        My bookings
+        <span class="count" id="mineCount"></span>
+      </a>
 
-    <section class="block">
-      <div class="block-head">
-        <h2>Spaces</h2>
-        <span class="hint">Hire rate is per hour. The deposit is refundable.</span>
+      <p class="nav-label">The centre</p>
+      <a class="nav-item" href="#/whats-on" data-route="whats-on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>
+        What is on
+      </a>
+      <a class="nav-item" href="#/spaces" data-route="spaces">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+        Our spaces
+      </a>
+
+      <div class="sidebar-foot">
+        The office reviews every request and replies within two working days.
+        Hire fees and deposits are settled at the front desk.
       </div>
-      <div class="spaces" id="spaces"></div>
-    </section>
+    </nav>
 
-    <section class="block">
-      <div class="block-head">
-        <h2>Availability</h2>
-        <span class="hint">The building is open 09:00 – 23:00</span>
-      </div>
-      <div class="card">
-        <div class="row">
-          <div class="field">
-            <label for="availSpace">Space</label>
-            <select id="availSpace"></select>
-          </div>
-          <div class="field">
-            <label for="availDate">Date</label>
-            <input type="date" id="availDate" value="2026-11-07" />
-          </div>
-        </div>
-        <p class="notice" id="availNote" role="status"></p>
-        <div class="slots" id="slots"></div>
-        <div class="legend">
-          <span><i></i> Free</span>
-          <span><i class="taken"></i> Taken</span>
-        </div>
-      </div>
-    </section>
+    <main class="content">
 
-    <section class="block">
-      <div class="block-head">
-        <h2>Request a booking</h2>
-        <span class="hint">Half-hour blocks · at least 30 minutes</span>
-      </div>
-
-      <div class="card lock" id="lockPanel">
-        <div class="glyph" aria-hidden="true">🔒</div>
-        <h3>Members only</h3>
-        <p>Sign in with your membership email to send a request to the office.</p>
-        <button type="button" id="lockSignin">Sign in to continue</button>
-      </div>
-
-      <form class="card hidden" id="requestForm">
-        <div class="row">
-          <div class="field">
-            <label for="fSpace">Space</label>
-            <select id="fSpace"></select>
-          </div>
-          <div class="field">
-            <label for="fDate">Event date</label>
-            <input type="date" id="fDate" value="2026-11-14" />
-          </div>
-          <div class="field">
-            <label for="fAttendees">Attendees</label>
-            <input id="fAttendees" type="number" min="1" value="40" />
+      <!-- ============================================== book a space -->
+      <section data-view="book">
+        <div class="view-head">
+          <div>
+            <h1>Book a space</h1>
+            <p>Choose a space, pick your date and time, and send the request to the office.</p>
           </div>
         </div>
 
-        <div class="row">
-          <div class="field">
-            <label for="fStart">Start</label>
-            <input id="fStart" value="10:00" />
+        <div class="booking-grid">
+          <div>
+            <p class="section-label">1 · Choose a space</p>
+            <div class="spaces" id="spaces"></div>
           </div>
-          <div class="field">
-            <label for="fEnd">End</label>
-            <input id="fEnd" value="14:00" />
-          </div>
-          <div class="field">
-            <label for="fVisibility">Show on the public calendar</label>
-            <select id="fVisibility">
-              <option value="public">Yes — show the event</option>
-              <option value="private">No — private event</option>
-            </select>
+
+          <div class="booking-panel">
+            <div class="card lock hidden" id="lockPanel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+              <h3>Members only</h3>
+              <p>Sign in with your membership email to send a request to the office.</p>
+              <button type="button" id="lockSignin">Sign in to continue</button>
+            </div>
+
+            <form class="card flush hidden" id="requestForm">
+              <div class="card-head">
+                <h2 id="panelSpace">Your booking</h2>
+                <span class="hint" id="panelCapacity"></span>
+              </div>
+
+              <div class="card-body stack">
+                <p class="section-label" style="margin:0">2 · When</p>
+                <div class="row">
+                  <div class="field">
+                    <label for="fDate">Event date</label>
+                    <input type="date" id="fDate" value="2026-11-14" />
+                  </div>
+                  <div class="field">
+                    <label for="fStart">Start</label>
+                    <input id="fStart" value="10:00" />
+                  </div>
+                  <div class="field">
+                    <label for="fEnd">End</label>
+                    <input id="fEnd" value="14:00" />
+                  </div>
+                </div>
+
+                <div>
+                  <div class="avail-head">
+                    <span class="section-label" style="margin:0">Already taken that day</span>
+                    <span class="legend">
+                      <span><i></i> Free</span>
+                      <span><i class="taken"></i> Taken</span>
+                    </span>
+                  </div>
+                  <div class="slots" id="slots"></div>
+                  <p class="notice info" id="availNote" role="status"></p>
+                </div>
+
+                <p class="section-label" style="margin:0">3 · Details</p>
+                <div class="row">
+                  <div class="field">
+                    <label for="fPurpose">What is it for</label>
+                    <input id="fPurpose" value="Community meeting" />
+                  </div>
+                  <div class="field">
+                    <label for="fAttendees">Attendees</label>
+                    <input id="fAttendees" type="number" min="1" value="40" />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="field">
+                    <label for="fVisibility">Show on the public calendar</label>
+                    <select id="fVisibility">
+                      <option value="public">Yes — show the event</option>
+                      <option value="private">No — private event</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="fNotes">Notes for the office</label>
+                  <textarea id="fNotes" rows="2" placeholder="Anything the caretaker should know"></textarea>
+                </div>
+
+                <details class="addons-block">
+                  <summary>Add-ons <span class="muted" id="addonSummary"></span></summary>
+                  <div class="addons" id="addonRow"></div>
+                </details>
+              </div>
+
+              <div class="quote" id="quote"></div>
+              <div class="card-body" style="padding-top:0">
+                <p class="notice" id="formErr" role="alert"></p>
+                <button type="submit" class="block">Send request to the office</button>
+                <p class="help muted" style="text-align:center;margin-top:9px">
+                  Nothing is confirmed automatically. A person at the front desk decides.
+                </p>
+              </div>
+            </form>
           </div>
         </div>
+      </section>
 
-        <div class="row">
-          <div class="field">
-            <label for="fPurpose">What is it for</label>
-            <input id="fPurpose" value="Community meeting" />
+      <!-- ============================================== my bookings -->
+      <section data-view="my-bookings" class="hidden">
+        <div class="view-head">
+          <div>
+            <h1>My bookings</h1>
+            <p>Everything you have asked the centre for. Cancelling releases the deposit.</p>
+          </div>
+          <div class="head-actions">
+            <button type="button" class="ghost" id="goBook">New request</button>
           </div>
         </div>
+        <div class="mine" id="mine"></div>
+      </section>
 
-        <div class="row">
-          <div class="field">
-            <label for="fNotes">Notes for the office</label>
-            <textarea id="fNotes" rows="2" placeholder="Anything the caretaker should know"></textarea>
-            <p class="help">Optional.</p>
+      <!-- ============================================== what's on -->
+      <section data-view="whats-on" class="hidden">
+        <div class="view-head">
+          <div>
+            <h1>What is on</h1>
+            <p>The public calendar. Private events show the space and the time, nothing else.</p>
           </div>
         </div>
+        <div id="calendar"></div>
+      </section>
 
-        <div class="row">
-          <div class="field">
-            <span class="label">Add-ons</span>
-            <div class="addons" id="addonRow"></div>
+      <!-- ============================================== spaces -->
+      <section data-view="spaces" class="hidden">
+        <div class="view-head">
+          <div>
+            <h1>Our spaces</h1>
+            <p>Capacities, hire rates and the refundable deposit held on each space.</p>
           </div>
         </div>
-
-        <div class="quote" id="quote"></div>
-        <p class="notice" id="formErr" role="alert"></p>
-
-        <div class="actions" style="margin-top:16px">
-          <button type="submit">Send request</button>
-          <span class="muted" style="font-size:13px">The office decides. Nothing is confirmed automatically.</span>
+        <div class="card flush">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Space</th><th scope="col">Holds</th>
+                  <th scope="col">Rate / hour</th><th scope="col">Deposit</th><th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody id="spaceRows"></tbody>
+            </table>
+          </div>
         </div>
-      </form>
-    </section>
+      </section>
 
-    <section class="block hidden" id="mineBlock">
-      <div class="block-head">
-        <h2>Your bookings</h2>
-        <span class="hint">Cancelling releases the deposit</span>
-      </div>
-      <div class="mine" id="mine"></div>
-    </section>
-
-    <section class="block">
-      <div class="block-head">
-        <h2>What is on</h2>
-        <span class="hint">Public calendar</span>
-      </div>
-      <div class="card" id="calendar"></div>
-    </section>
-  </main>
+    </main>
+  </div>
 
   <script type="module" src="/app.js"></script>
 </body>

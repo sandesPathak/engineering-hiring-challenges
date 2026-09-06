@@ -5,148 +5,223 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Office console | Himalaya Cultural Centre</title>
   <link rel="stylesheet" href="/styles.css" />
-  <link rel="stylesheet" href="/app.css" />
+  <link rel="stylesheet" href="/console.css" />
 </head>
 <body>
   <header class="masthead">
     <div class="inner">
-      <a class="brand" href="/">
+      <a class="brand" href="/staff.html">
         <span class="mark" aria-hidden="true">हि</span>
         <span>
           <span class="name">Himalaya Cultural Centre</span>
           <span class="sub">Office console</span>
         </span>
       </a>
-      <nav aria-label="Main">
-        <a href="/">Book a space</a>
+      <nav class="switcher" aria-label="Site">
+        <a href="/">Members</a>
         <a href="/staff.html" aria-current="page">Office</a>
       </nav>
       <div class="account" id="account"></div>
     </div>
   </header>
 
-  <main class="wide">
-    <div class="page-head">
-      <h1>Bookings</h1>
-      <p class="story">
-        Every request the centre has received. Approve or reject what is waiting, and export
-        the current filter for the committee.
-      </p>
-    </div>
+  <div class="shell">
+    <nav class="sidebar" aria-label="Sections">
+      <p class="nav-label">Front desk</p>
+      <a class="nav-item" href="#/today" data-route="today">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13h5l1.5 3h5L16 13h5"/><path d="M5.5 4.5h13l2.5 8.5v4.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V13z"/></svg>
+        Awaiting decision
+        <span class="count" id="pendingCount"></span>
+      </a>
+      <a class="nav-item" href="#/bookings" data-route="bookings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>
+        All bookings
+      </a>
 
-    <div class="card lock" id="lockPanel">
-      <div class="glyph" aria-hidden="true">🔒</div>
-      <h3 id="lockTitle">Staff sign-in required</h3>
-      <p id="lockBody">The office console is limited to front desk accounts.</p>
-      <button type="button" id="lockSignin">Sign in</button>
-    </div>
+      <p class="nav-label">Records</p>
+      <a class="nav-item" href="#/figures" data-route="figures">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        Figures
+      </a>
+      <a class="nav-item" href="#/audit" data-route="audit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1M3.5 4.5V10H9"/><path d="M12 8v4.5l3 1.8"/></svg>
+        Audit log
+      </a>
 
-    <div id="consoleView" class="hidden">
-      <div class="stats" id="stats"></div>
+      <div class="sidebar-foot">
+        Signed-in staff can see every booking and every member's contact details.
+        Approvals and rejections are written to the audit log.
+      </div>
+    </nav>
 
-      <section class="block">
-        <div class="block-head">
-          <h2>Filter</h2>
-          <span class="hint" id="resultCount"></span>
-        </div>
+    <main class="content">
 
-        <div class="card">
-          <div class="filters">
-            <div class="field wide">
-              <label for="q">Search</label>
-              <input id="q" placeholder="Name, email or reference" />
+      <div class="card lock hidden" id="lockPanel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+        <h3 id="lockTitle">Staff sign-in required</h3>
+        <p id="lockBody">The office console is limited to front desk accounts.</p>
+        <button type="button" id="lockSignin">Sign in</button>
+      </div>
+
+      <div id="consoleView" class="hidden">
+
+        <!-- ========================================== awaiting decision -->
+        <section data-view="today" class="hidden">
+          <div class="view-head">
+            <div>
+              <h1>Awaiting decision</h1>
+              <p>Requests the centre has received and nobody has answered yet. The slot is
+                held while you decide.</p>
             </div>
-            <div class="field">
-              <label for="status">Status</label>
-              <select id="status">
-                <option value="all">All statuses</option>
-                <option value="pending">Pending</option>
-                <option value="confirmed">Confirmed</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-                <option value="rejected">Rejected</option>
+          </div>
+          <div class="queue" id="queue"></div>
+        </section>
+
+        <!-- ========================================== all bookings -->
+        <section data-view="bookings" class="hidden">
+          <div class="view-head">
+            <div>
+              <h1>All bookings</h1>
+              <p>Every request the centre has received, filtered however you need it.</p>
+            </div>
+            <div class="head-actions">
+              <button type="button" class="ghost" id="csv">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7.5 10.5 12 15l4.5-4.5M4 20h16"/></svg>
+                Export CSV
+              </button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom:16px">
+            <div class="filters">
+              <div class="field wide">
+                <label for="q">Search</label>
+                <input id="q" placeholder="Name, email or reference" />
+              </div>
+              <div class="field">
+                <label for="status">Status</label>
+                <select id="status">
+                  <option value="all">All statuses</option>
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="space">Space</label>
+                <select id="space"><option value="">All spaces</option></select>
+              </div>
+              <div class="field">
+                <label for="from">From</label>
+                <input type="date" id="from" />
+              </div>
+              <div class="field">
+                <label for="to">To</label>
+                <input type="date" id="to" />
+              </div>
+              <div class="field">
+                <label for="sort">Sort by</label>
+                <select id="sort">
+                  <option value="event_date">Event date</option>
+                  <option value="created_at">Requested</option>
+                  <option value="attendees">Attendees</option>
+                  <option value="status">Status</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="dir">Order</label>
+                <select id="dir">
+                  <option value="desc">Newest first</option>
+                  <option value="asc">Oldest first</option>
+                </select>
+              </div>
+            </div>
+            <div class="filter-foot">
+              <button type="button" id="apply">Apply</button>
+              <button type="button" class="ghost" id="reset">Reset</button>
+              <span class="result-count" id="resultCount"></span>
+            </div>
+          </div>
+
+          <div class="card flush">
+            <div class="table-wrap">
+              <table>
+                <caption class="sr-only">Booking requests matching the current filter</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Reference</th>
+                    <th scope="col">Member</th>
+                    <th scope="col">Space</th>
+                    <th scope="col">When</th>
+                    <th scope="col">Hours</th>
+                    <th scope="col">Fee</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Purpose</th>
+                    <th scope="col"><span class="sr-only">Decision</span></th>
+                  </tr>
+                </thead>
+                <tbody id="rows"></tbody>
+              </table>
+            </div>
+            <div class="empty hidden" id="emptyState">No bookings match this filter.</div>
+            <div class="pager">
+              <span id="pageInfo" class="nums"></span>
+              <span class="spacer"></span>
+              <label for="pageSize" class="muted">Per page</label>
+              <select id="pageSize">
+                <option>10</option><option selected>25</option><option>50</option><option>100</option>
               </select>
-            </div>
-            <div class="field">
-              <label for="space">Space</label>
-              <select id="space"><option value="">All spaces</option></select>
-            </div>
-            <div class="field">
-              <label for="from">From</label>
-              <input type="date" id="from" />
-            </div>
-            <div class="field">
-              <label for="to">To</label>
-              <input type="date" id="to" />
-            </div>
-            <div class="field">
-              <label for="sort">Sort by</label>
-              <select id="sort">
-                <option value="event_date">Event date</option>
-                <option value="created_at">Requested</option>
-                <option value="attendees">Attendees</option>
-                <option value="status">Status</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="dir">Order</label>
-              <select id="dir">
-                <option value="desc">Newest first</option>
-                <option value="asc">Oldest first</option>
-              </select>
+              <button type="button" class="ghost small" id="prev">Previous</button>
+              <button type="button" class="ghost small" id="next">Next</button>
             </div>
           </div>
+          <p class="notice" id="tableErr" role="alert" style="margin-top:12px"></p>
+        </section>
 
-          <div class="filter-foot">
-            <button type="button" id="apply">Apply</button>
-            <button type="button" class="ghost" id="reset">Reset</button>
-            <span class="spacer"></span>
-            <button type="button" class="ghost" id="csv">Export CSV</button>
+        <!-- ========================================== figures -->
+        <section data-view="figures" class="hidden">
+          <div class="view-head">
+            <div>
+              <h1>Figures</h1>
+              <p>What the committee asks for at the monthly meeting.</p>
+            </div>
           </div>
-        </div>
-      </section>
+          <div class="stats" id="stats"></div>
+          <p class="muted" style="margin-top:14px;font-size:13px">
+            Hours and hire fees cover confirmed and completed bookings. Deposits held counts
+            bookings whose deposit has not been released.
+          </p>
+        </section>
 
-      <section class="block">
-        <div class="block-head"><h2>Results</h2></div>
-        <div class="card flush">
-          <div class="table-wrap">
-            <table>
-              <caption class="sr-only">Booking requests matching the current filter</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Reference</th>
-                  <th scope="col">Member</th>
-                  <th scope="col">Space</th>
-                  <th scope="col">When</th>
-                  <th scope="col">Hours</th>
-                  <th scope="col">Fee</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Purpose</th>
-                  <th scope="col"><span class="sr-only">Decision</span></th>
-                </tr>
-              </thead>
-              <tbody id="rows"></tbody>
-            </table>
+        <!-- ========================================== audit -->
+        <section data-view="audit" class="hidden">
+          <div class="view-head">
+            <div>
+              <h1>Audit log</h1>
+              <p>Who decided what, and when. The last hundred entries.</p>
+            </div>
           </div>
-          <div class="empty hidden" id="emptyState">No bookings match this filter.</div>
-          <div class="pager">
-            <span id="pageInfo" class="nums"></span>
-            <span class="spacer"></span>
-            <label for="pageSize" class="muted" style="font-size:13px">Per page</label>
-            <select id="pageSize" style="width:auto">
-              <option>10</option>
-              <option selected>25</option>
-              <option>50</option>
-              <option>100</option>
-            </select>
-            <button type="button" class="ghost small" id="prev">Previous</button>
-            <button type="button" class="ghost small" id="next">Next</button>
+          <div class="card flush">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">When</th><th scope="col">Action</th>
+                    <th scope="col">Booking</th><th scope="col">Who did it</th><th scope="col">Reason</th>
+                  </tr>
+                </thead>
+                <tbody id="auditRows"></tbody>
+              </table>
+            </div>
+            <div class="empty hidden" id="auditEmpty">Nothing has been decided yet.</div>
           </div>
-        </div>
-        <p class="notice" id="tableErr" role="alert"></p>
-      </section>
-    </div>
-  </main>
+        </section>
+
+      </div>
+    </main>
+  </div>
 
   <script type="module" src="/staff.js"></script>
 </body>
