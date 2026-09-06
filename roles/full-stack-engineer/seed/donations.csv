@@ -1,0 +1,76 @@
+receipt_number,campaign_slug,donor_name,donor_email,amount_dollars,status,privacy_mode,dedication_type,dedication_name,dedication_message,is_recurring,created_at
+HCC-2026-000001,aangan-courtyard,"Shrestha, Bijay ""BJ""",bijay.shrestha@example.com,101.00,completed,public,in_honor_of,Aama,"Thank you for everything, Aama.",false,2026-08-01T15:04:00Z
+HCC-2026-000002,aangan-courtyard,अनिशा गुरुङ,anisha.gurung@example.com,501.00,completed,public,in_memory_of,बुबा,सधैं सम्झनामा।,false,2026-08-01T16:12:00Z
+HCC-2026-000003,aangan-courtyard,Priya Adhikari,priya.adhikari@example.com,25000.00,completed,public,,,,false,2026-08-02T09:30:00Z
+HCC-2026-000004,aangan-courtyard,Sunil Karki,sunil.karki@example.com,1.00,completed,public,,,Every little bit.,false,2026-08-02T10:02:00Z
+HCC-2026-000005,aangan-courtyard,Ramesh Thapa,ramesh.thapa@example.com,21.00,completed,anonymous,,,,false,2026-08-02T11:45:00Z
+HCC-2026-000006,aangan-courtyard,Maya Gurung,maya.gurung@example.com,51.00,completed,family,in_honor_of,Hajurama,,false,2026-08-02T12:20:00Z
+HCC-2026-000007,aangan-courtyard,Nabin Rai,nabin.rai@example.com,101.00,refunded,public,,,Paid twice by mistake.,false,2026-08-03T08:15:00Z
+HCC-2026-000008,aangan-courtyard,Kabita Lama,kabita.lama@example.com,501.00,failed,public,,,,false,2026-08-03T09:01:00Z
+HCC-2026-000009,aangan-courtyard,Deepak Magar,deepak.magar@example.com,21.00,completed,public,in_memory_of,Sano Bhai,<script>alert(1)</script>,false,2026-08-03T14:33:00Z
+HCC-2026-000010,aangan-courtyard,Sabina Tamang,sabina.tamang@example.com,51.00,completed,public,in_honor_of,Ba,"<img src=x onerror=""alert(document.cookie)"">",false,2026-08-03T15:10:00Z
+HCC-2026-000011,aangan-courtyard,Arjun Bhattarai,ARJUN.BHATTARAI@Example.com,101.00,completed,public,,,"Same person as the row below, different capitalisation.",false,2026-08-04T07:44:00Z
+HCC-2026-000012,aangan-courtyard,Arjun Bhattarai,arjun.bhattarai@example.com,21.00,completed,public,,,,true,2026-08-04T07:51:00Z
+HCC-2026-000013,aangan-courtyard,Sita Poudel,sita.poudel@example.com,1001.00,completed,anonymous,in_memory_of,Aama,She fed anybody who walked in. 🙏,false,2026-08-04T18:05:00Z
+HCC-2026-000014,aangan-courtyard,Bikash Shah,bikash.shah@example.com,101.00,completed,public,in_honor_of,"My teacher, Mr. Rana","A message that runs right up to the two hundred and eighty character limit, because a field that is never tested at its boundary is a field that will one day be truncated in a certificate, a receipt and an email at three different lengths, and nobody will notice until a donor calls.",false,2026-08-05T11:00:00Z
+HCC-2026-000015,annadaan-kitchen,Gopal Neupane,gopal.neupane@example.com,11.00,completed,public,,,,false,2026-08-05T12:30:00Z
+HCC-2026-000016,annadaan-kitchen,Laxmi Chaudhary,laxmi.chaudhary@example.com,51.00,completed,family,,,,true,2026-08-06T09:12:00Z
+HCC-2026-000017,roof-repair-2025,Hari Dahal,hari.dahal@example.com,51.00,completed,public,,,,false,2025-04-11T10:00:00Z
+HCC-2026-000018,roof-repair-2025,Sarita Basnet,sarita.basnet@example.com,21.00,refunded,public,,,,false,2025-04-12T10:00:00Z
+HCC-2026-000019,aangan-courtyard,Test Donor,donor@himalayacc.example,101.00,completed,public,,,,false,2026-08-07T09:00:00Z
+HCC-2026-000020,aangan-courtyard,Test Donor,donor@himalayacc.example,21.00,completed,anonymous,,,,false,2026-08-07T09:05:00Z
+HCC-2026-000021,annadaan-kitchen,Test Donor,donor@himalayacc.example,51.00,refunded,public,,,Changed my mind.,false,2026-08-07T09:20:00Z
+HCC-2026-000022,aangan-courtyard,Other Donor,other@himalayacc.example,501.00,completed,public,,,,false,2026-08-07T10:00:00Z
+HCC-2026-000023,aangan-courtyard,Other Donor,other@himalayacc.example,21.00,completed,family,in_honor_of,Didi,,false,2026-08-07T10:04:00Z
+HCC-2026-000024,aangan-courtyard,Rabi Pandey,rabi.pandey0@example.com,501.00,completed,public,,,,false,2026-08-08T08:59:00Z
+HCC-2026-000025,aangan-courtyard,Ishwor Nepal,ishwor.nepal1@example.com,35.00,completed,anonymous,,,धन्यवाद।,false,2026-08-08T16:05:00Z
+HCC-2026-000026,aangan-courtyard,Zenith Tuladhar,zenith.tuladhar2@example.com,101.00,completed,anonymous,,,Jay Nepal.,false,2026-08-09T00:15:00Z
+HCC-2026-000027,roof-repair-2025,Zenith Yadav,zenith.yadav3@example.com,250.00,completed,anonymous,in_memory_of,my parents,Jay Nepal.,false,2026-08-09T05:30:00Z
+HCC-2026-000028,aangan-courtyard,Jyoti Joshi,jyoti.joshi4@example.com,51.00,completed,public,in_memory_of,Didi,धन्यवाद।,false,2026-08-09T13:57:00Z
+HCC-2026-000029,aangan-courtyard,Yamuna Dhakal,yamuna.dhakal5@example.com,51.00,completed,public,in_honor_of,Didi,,false,2026-08-09T20:01:00Z
+HCC-2026-000030,aangan-courtyard,Vijay Tuladhar,vijay.tuladhar6@example.com,75.00,completed,family,in_memory_of,Hajurama,,false,2026-08-10T07:39:00Z
+HCC-2026-000031,aangan-courtyard,Bimala Oli,bimala.oli7@example.com,250.00,completed,family,,,Jay Nepal.,true,2026-08-10T10:31:00Z
+HCC-2026-000032,aangan-courtyard,Eliza Joshi,eliza.joshi8@example.com,501.00,completed,family,,,,false,2026-08-10T16:29:00Z
+HCC-2026-000033,aangan-courtyard,Ishwor Joshi,ishwor.joshi9@example.com,51.00,refunded,family,,,धन्यवाद।,false,2026-08-10T23:55:00Z
+HCC-2026-000034,aangan-courtyard,Manish Maharjan,manish.maharjan10@example.com,501.00,completed,anonymous,,,For the community.,true,2026-08-11T07:52:00Z
+HCC-2026-000035,aangan-courtyard,Jyoti Bhandari,jyoti.bhandari11@example.com,75.00,completed,public,,,धन्यवाद।,false,2026-08-11T18:39:00Z
+HCC-2026-000036,aangan-courtyard,Chetan Bhandari,chetan.bhandari12@example.com,35.00,refunded,public,,,,false,2026-08-11T22:50:00Z
+HCC-2026-000037,aangan-courtyard,Manish Acharya,manish.acharya13@example.com,101.00,completed,public,,,Jay Nepal.,false,2026-08-12T06:59:00Z
+HCC-2026-000038,annadaan-kitchen,Zenith Khadka,zenith.khadka14@example.com,101.00,completed,public,,,,false,2026-08-12T12:50:00Z
+HCC-2026-000039,aangan-courtyard,Om Bhandari,om.bhandari15@example.com,101.00,completed,public,,,For the community.,false,2026-08-12T18:05:00Z
+HCC-2026-000040,aangan-courtyard,Vijay Chhetri,vijay.chhetri16@example.com,75.00,completed,anonymous,in_memory_of,Hajurbuba,धन्यवाद।,false,2026-08-13T00:07:00Z
+HCC-2026-000041,annadaan-kitchen,Bimala Wagle,bimala.wagle17@example.com,250.00,completed,anonymous,,,धन्यवाद।,false,2026-08-13T11:38:00Z
+HCC-2026-000042,aangan-courtyard,Sushmita Maharjan,sushmita.maharjan18@example.com,501.00,completed,family,,,,false,2026-08-13T16:46:00Z
+HCC-2026-000043,aangan-courtyard,Bhawana Bhandari,bhawana.bhandari19@example.com,501.00,completed,public,in_memory_of,Didi,Jay Nepal.,false,2026-08-13T22:34:00Z
+HCC-2026-000044,aangan-courtyard,Bhawana Upreti,bhawana.upreti20@example.com,35.00,completed,family,,,,false,2026-08-14T04:50:00Z
+HCC-2026-000045,aangan-courtyard,Puja Ghimire,puja.ghimire21@example.com,75.00,completed,family,in_memory_of,Bhai,For the community.,false,2026-08-14T15:28:00Z
+HCC-2026-000046,annadaan-kitchen,Gita Limbu,gita.limbu22@example.com,51.00,completed,anonymous,in_memory_of,Bhai,Thank you.,true,2026-08-14T20:36:00Z
+HCC-2026-000047,aangan-courtyard,Eliza Rijal,eliza.rijal23@example.com,501.00,completed,public,in_honor_of,Hajurama,Jay Nepal.,false,2026-08-15T03:15:00Z
+HCC-2026-000048,aangan-courtyard,Rajan Upreti,rajan.upreti24@example.com,21.00,completed,public,in_memory_of,Bhai,,false,2026-08-15T13:20:00Z
+HCC-2026-000049,annadaan-kitchen,Hemant Sapkota,hemant.sapkota25@example.com,250.00,completed,public,,,Jay Nepal.,false,2026-08-15T18:32:00Z
+HCC-2026-000050,aangan-courtyard,Bimala Oli,bimala.oli26@example.com,5.00,completed,public,,,,false,2026-08-15T22:58:00Z
+HCC-2026-000051,roof-repair-2025,Gita Sapkota,gita.sapkota27@example.com,2500.00,completed,public,,,Thank you.,false,2026-08-16T08:06:00Z
+HCC-2026-000052,annadaan-kitchen,Jyoti Pandey,jyoti.pandey28@example.com,5.00,failed,public,,,धन्यवाद।,false,2026-08-16T12:30:00Z
+HCC-2026-000053,aangan-courtyard,Pratima Wagle,pratima.wagle29@example.com,101.00,completed,public,,,,false,2026-08-16T22:20:00Z
+HCC-2026-000054,aangan-courtyard,Nisha Rijal,nisha.rijal30@example.com,2500.00,completed,public,,,For the community.,false,2026-08-17T07:25:00Z
+HCC-2026-000055,aangan-courtyard,Krishna Limbu,krishna.limbu31@example.com,5.00,completed,public,,,For the community.,false,2026-08-17T14:34:00Z
+HCC-2026-000056,aangan-courtyard,Om Tuladhar,om.tuladhar32@example.com,51.00,completed,public,in_honor_of,Hajurbuba,,false,2026-08-17T17:29:00Z
+HCC-2026-000057,aangan-courtyard,Anju Acharya,anju.acharya33@example.com,2500.00,completed,anonymous,,,,true,2026-08-17T23:07:00Z
+HCC-2026-000058,roof-repair-2025,Lila Rijal,lila.rijal34@example.com,250.00,completed,public,in_memory_of,Bhai,,false,2026-08-18T07:42:00Z
+HCC-2026-000059,annadaan-kitchen,Hemant Joshi,hemant.joshi35@example.com,1001.00,completed,public,,,Jay Nepal.,false,2026-08-18T18:25:00Z
+HCC-2026-000060,aangan-courtyard,Zenith Yadav,zenith.yadav36@example.com,250.00,refunded,public,in_memory_of,Hajurbuba,धन्यवाद।,false,2026-08-19T00:51:00Z
+HCC-2026-000061,aangan-courtyard,Jyoti Wagle,jyoti.wagle37@example.com,5.00,refunded,public,,,Jay Nepal.,false,2026-08-19T03:05:00Z
+HCC-2026-000062,annadaan-kitchen,Eliza Bhandari,eliza.bhandari38@example.com,501.00,completed,public,in_memory_of,Buba,With gratitude.,true,2026-08-19T10:55:00Z
+HCC-2026-000063,aangan-courtyard,Ishwor Yadav,ishwor.yadav39@example.com,501.00,completed,public,,,With gratitude.,false,2026-08-19T20:35:00Z
+HCC-2026-000064,roof-repair-2025,Anju Maharjan,anju.maharjan40@example.com,101.00,completed,anonymous,in_memory_of,Hajurbuba,धन्यवाद।,true,2026-08-20T04:04:00Z
+HCC-2026-000065,aangan-courtyard,Sushmita Upreti,sushmita.upreti41@example.com,75.00,completed,public,in_honor_of,my parents,Jay Nepal.,false,2026-08-20T12:54:00Z
+HCC-2026-000066,aangan-courtyard,Furba Chhetri,furba.chhetri42@example.com,1001.00,completed,anonymous,in_memory_of,Aama,,false,2026-08-20T19:26:00Z
+HCC-2026-000067,annadaan-kitchen,Furba Nepal,furba.nepal43@example.com,51.00,completed,public,,,,false,2026-08-20T22:40:00Z
+HCC-2026-000068,aangan-courtyard,Sushmita Ghimire,sushmita.ghimire44@example.com,1001.00,completed,public,,,,false,2026-08-21T06:37:00Z
+HCC-2026-000069,annadaan-kitchen,Furba Wagle,furba.wagle45@example.com,101.00,completed,public,,,,true,2026-08-21T16:43:00Z
+HCC-2026-000070,aangan-courtyard,Manish Pandey,manish.pandey46@example.com,2500.00,completed,anonymous,in_honor_of,Buba,For the community.,false,2026-08-21T23:55:00Z
+HCC-2026-000071,aangan-courtyard,Eliza Sapkota,eliza.sapkota47@example.com,75.00,completed,family,in_honor_of,,Jay Nepal.,false,2026-08-22T04:45:00Z
+HCC-2026-000072,roof-repair-2025,Jyoti Ghimire,jyoti.ghimire48@example.com,35.00,completed,public,,,For the community.,false,2026-08-22T08:09:00Z
+HCC-2026-000073,aangan-courtyard,Rabi Pandey,rabi.pandey49@example.com,1001.00,completed,family,in_memory_of,Hajurama,Thank you.,true,2026-08-22T15:57:00Z
+HCC-2026-000074,annadaan-kitchen,Rajan Oli,rajan.oli50@example.com,501.00,completed,anonymous,in_memory_of,Aama,Jay Nepal.,true,2026-08-23T02:05:00Z
+HCC-2026-000075,aangan-courtyard,Nisha Oli,nisha.oli51@example.com,75.00,completed,public,in_memory_of,Hajurama,For the community.,true,2026-08-23T05:01:00Z

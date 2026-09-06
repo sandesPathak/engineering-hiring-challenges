@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "aangan-courtyard",
+    "title": "Aangan — Courtyard Restoration",
+    "story": "The courtyard is where the community actually happens. It is where people wait, talk, take their shoes off, and where the children run during Dashain. The stone has not been touched in nineteen years and three of the drains no longer carry water away from the prayer hall. This campaign repaves the courtyard, rebuilds the drainage, and adds shaded seating for the elders who spend their mornings here.",
+    "goalCents": 15000000,
+    "currency": "USD",
+    "startsAt": "2026-08-01T00:00:00Z",
+    "endsAt": "2026-12-31T23:59:59Z",
+    "isActive": true,
+    "presetAmountsCents": [2100, 5100, 10100, 50100, 100100],
+    "minimumCents": 100,
+    "maximumCents": 2500000
+  },
+  {
+    "slug": "annadaan-kitchen",
+    "title": "Annadaan — Community Kitchen",
+    "story": "A second campaign, seeded so that your queries have to be scoped by campaign rather than accidentally counting everything in the donations table.",
+    "goalCents": 4000000,
+    "currency": "USD",
+    "startsAt": "2026-06-01T00:00:00Z",
+    "endsAt": null,
+    "isActive": true,
+    "presetAmountsCents": [1100, 2100, 5100],
+    "minimumCents": 100,
+    "maximumCents": 500000
+  },
+  {
+    "slug": "roof-repair-2025",
+    "title": "Roof Repair (closed)",
+    "story": "A finished campaign. It is here so that your public page has to handle a campaign that is over, and one that is already past its goal.",
+    "goalCents": 2000000,
+    "currency": "USD",
+    "startsAt": "2025-03-01T00:00:00Z",
+    "endsAt": "2025-09-30T23:59:59Z",
+    "isActive": false,
+    "presetAmountsCents": [2100, 5100],
+    "minimumCents": 100,
+    "maximumCents": 500000
+  }
+]
