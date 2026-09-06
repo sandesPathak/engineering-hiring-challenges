@@ -33,6 +33,56 @@ will not do is guess.
 
 ---
 
+## Where does the database run? (Yes — inside Docker)
+
+**Short answer: your database is a service in your own `docker-compose.yml`, and it comes
+up when we run `docker compose up --build`.** We are not going to create a cloud database,
+paste a connection string, or install Postgres on our machines to review your submission.
+If your app needs a database — and it does — the compose stack has to provide it.
+
+That means:
+
+- **No hosted database.** Not Neon, not Supabase, not RDS, not Atlas. A free-tier URL
+  expires, gets rate limited, or is already dead by the time we open your email.
+- **No "install Postgres first" step** in your README.
+- **No credentials of yours anywhere.** `.env.example` carries throwaway local values.
+- The data must survive a restart (**a named volume**) and must be genuinely resettable
+  (`docker compose down -v`).
+
+### What the stack needs to contain
+
+| Service | Required? | Notes |
+|---|---|---|
+| **db** | Yes, if you chose a server database | `postgres:16-alpine` (or `mysql:8`, `mongo:7`). Pinned tag, named volume, `healthcheck`. |
+| **api** | Yes | `depends_on: db: condition: service_healthy`. Runs migrations and seed on start, or documents the one command that does. |
+| **web** | Yes, unless your API serves the UI itself | A single service that serves both is completely fine — say so in the README. |
+| anything else | No | You do not need Redis, nginx, or a message queue. If you add one, justify it in the README. |
+
+Two services is a perfectly good answer. Three is the common one. Six is a scoping mistake.
+
+### If you choose SQLite instead
+
+Also fine — and a legitimate choice, as long as you address concurrency in your README (see
+[`08-node-and-tooling.md`](08-node-and-tooling.md)). There is then **no `db` service**,
+because the database is a file. What we look for instead:
+
+```yaml
+services:
+  app:
+    build: .
+    environment:
+      DATABASE_URL: file:/data/aangan.db
+    volumes: [dbdata:/data]        # the file must NOT live inside the image layer
+    ports: ["3000:3000"]
+volumes:
+  dbdata:
+```
+
+The mistake to avoid is writing the database file into the container filesystem with no
+volume: it works, then silently loses every donation the moment the container is recreated.
+
+---
+
 ## The shape we expect
 
 ```

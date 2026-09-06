@@ -13,10 +13,11 @@ net that stops it coming back.**
 
 ## Which files do I actually need?
 
-**Four files, then start testing.** Everything else is reference.
+**Five files, then start testing.** Everything else is reference.
 
 | | File | |
 |---|---|---|
+| **Read now** | [`SETUP.md` → Step 0](SETUP.md#step-0--get-your-machine-ready-10-minutes-do-it-first) | What to install, with links. Node 24, Docker, Git. Ten minutes. |
 | **Read now** | [`app/README.md`](app/README.md) | How to run it, the accounts, and the seeded numbers you can check by hand. |
 | **Read now** | [`app/SPEC.md`](app/SPEC.md) | **The source of truth for what counts as a defect.** §7 lists behaviour that looks wrong and is not — reporting those costs points. |
 | **Read now** | [`REQUIREMENTS.md`](REQUIREMENTS.md) | The five deliverables. |

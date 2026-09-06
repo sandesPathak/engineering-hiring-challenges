@@ -5,6 +5,36 @@ four hours writing automation before knowing what is worth automating.
 
 ---
 
+## Step 0 — get your machine ready (10 minutes, do it first)
+
+| | What | Install link |
+|---|---|---|
+| 1 | **Node.js 24 LTS** | [nodejs.org/en/download](https://nodejs.org/en/download) — or `nvm install 24 && nvm use 24` ([nvm](https://github.com/nvm-sh/nvm), [nvm-windows](https://github.com/coreybutler/nvm-windows)) |
+| 2 | **Docker Desktop** / Docker Engine + Compose v2 — optional, the app also runs with plain Node | [docs.docker.com/get-started/get-docker](https://docs.docker.com/get-started/get-docker/) |
+| 3 | **Git** | [git-scm.com/downloads](https://git-scm.com/downloads) |
+| 4 | An **API client** — curl is enough | [Bruno](https://www.usebruno.com/) · [Postman](https://www.postman.com/downloads/) · [HTTPie](https://httpie.io/cli) |
+| 5 | A **screen recorder** for the video | [Loom](https://www.loom.com/) · [OBS](https://obsproject.com/) · macOS `Cmd-Shift-5` |
+
+**You do not install a database.** The app under test uses `node:sqlite`, which ships inside
+Node 24 — there is nothing to set up and nothing to connect to. When you run the app under
+Docker, that file lives in a named volume; the compose file is already written for you in
+[`app/docker-compose.yml`](app/docker-compose.yml).
+
+For the automation you write, [Playwright](https://playwright.dev/docs/intro) and
+[Vitest](https://vitest.dev/guide/) are the fast defaults, but use whatever you are quickest
+in — the choice is not graded, the coverage is.
+
+Fork this repository and clone your fork
+([how to fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)):
+
+```bash
+git clone https://github.com/<you>/engineering-hiring-challenges.git
+cd engineering-hiring-challenges/roles/qa-engineer
+node -v      # must print v24.x
+```
+
+---
+
 ## 0:00 – 0:30 — Get it running and read the spec
 
 ```bash

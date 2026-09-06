@@ -12,11 +12,12 @@ under Docker.
 
 ## Which files do I actually need?
 
-**Read two things and start.** Everything else in this folder is reference — open it at the
+**Read three things and start.** Everything else in this folder is reference — open it at the
 moment it becomes relevant, and the requirements will tell you when.
 
 | | File | |
 |---|---|---|
+| **Read now** | [`SETUP.md` → Step 0](SETUP.md#step-0--get-your-machine-ready-10-minutes-do-it-first) | What to install, with links. Node 24, Docker, Git. Ten minutes. |
 | **Read now** | [`REQUIREMENTS.md`](REQUIREMENTS.md) | The specification. Must / should / stretch. |
 | **Read now** | [`SETUP.md`](SETUP.md) | A suggested path through the day, and the environment variables. |
 | Reference | [`DATA-MODEL.md`](DATA-MODEL.md) | When you design the schema. A suggestion plus seven non-negotiable rules. |

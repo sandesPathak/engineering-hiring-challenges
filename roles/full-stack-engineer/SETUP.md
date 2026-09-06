@@ -8,6 +8,42 @@ Times are rough. Read [`REQUIREMENTS.md`](REQUIREMENTS.md) first.
 
 ---
 
+## Step 0 — get your machine ready (10 minutes, do it first)
+
+| | What | Install link |
+|---|---|---|
+| 1 | **Node.js 24 LTS** | [nodejs.org/en/download](https://nodejs.org/en/download) — or `nvm install 24 && nvm use 24` ([nvm](https://github.com/nvm-sh/nvm), [nvm-windows](https://github.com/coreybutler/nvm-windows)) |
+| 2 | **Docker Desktop** / Docker Engine + Compose v2 | [docs.docker.com/get-started/get-docker](https://docs.docker.com/get-started/get-docker/) · [Linux](https://docs.docker.com/compose/install/linux/) |
+| 3 | **Git** | [git-scm.com/downloads](https://git-scm.com/downloads) |
+| 4 | A **screen recorder** for the video | [Loom](https://www.loom.com/) · [OBS](https://obsproject.com/) · macOS `Cmd-Shift-5` |
+
+```bash
+node -v                   # must print v24.x
+docker compose version    # must print v2.x
+docker run --rm hello-world   # proves the daemon is actually running
+```
+
+Do the `hello-world` check now, not at hour six. A Docker daemon that will not start is a
+thirty-minute problem on a good day, and you do not want to meet it at 11pm.
+
+**You do not install Postgres.** It runs as a container in your own compose file — see
+the Docker step below and
+[`../../docs/05-docker-and-deployment.md`](../../docs/05-docker-and-deployment.md).
+
+Then fork this repository and clone your fork
+([how to fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo)):
+
+```bash
+git clone https://github.com/<you>/engineering-hiring-challenges.git
+cd engineering-hiring-challenges/roles/full-stack-engineer
+```
+
+Your project can live in this fork or in a fresh repository of your own — both are fine,
+just say which in your email. The seed data you need is in
+[`seed/`](seed/) and the mock payment provider is in [`reference/`](reference/).
+
+---
+
 ## Before you write anything — 20 minutes
 
 Read `REQUIREMENTS.md`, `DATA-MODEL.md` and `API-CONTRACT.md`. Then open a file called
@@ -119,7 +155,16 @@ font, stop.
 
 ## Hour 5:15 – 6:00 — Docker
 
-`Dockerfile` per app, `docker-compose.yml`, `.env.example`, `.dockerignore`. Then:
+`Dockerfile` per app, `docker-compose.yml`, `.env.example`, `.dockerignore`.
+
+**The database is a service in that compose file** — `postgres:16-alpine` with a named
+volume and a healthcheck, and the API waiting on it with
+`depends_on: db: {condition: service_healthy}`. Not a hosted database, not one we install.
+If you chose SQLite there is no `db` service, but the file still needs a named volume.
+Both shapes are written out in
+[`../../docs/05-docker-and-deployment.md`](../../docs/05-docker-and-deployment.md).
+
+Then:
 
 ```bash
 docker compose down -v && docker builder prune -f

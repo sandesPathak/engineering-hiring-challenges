@@ -59,6 +59,21 @@ Yours. See [`08-node-and-tooling.md`](08-node-and-tooling.md). Postgres is the s
 because the hard part of the exercise is a concurrency problem. If you choose SQLite or
 Mongo, address concurrency explicitly in your README.
 
+### Does the database have to run inside Docker?
+
+**Yes.** It is a service in your own `docker-compose.yml` and it starts with
+`docker compose up --build`. We will not create a cloud database or install Postgres to
+review your work, and a free-tier hosted URL will be expired or rate-limited by the time we
+open it. Use `postgres:16-alpine` with a named volume and a healthcheck — or SQLite with a
+named volume, which needs no `db` service at all. Both shapes are written out in
+[`05-docker-and-deployment.md`](05-docker-and-deployment.md).
+
+### What do I actually need installed?
+
+Node 24, Docker, Git, a GitHub account and a screen recorder. Nothing else — no Postgres on
+your machine, no cloud account. The links are in the
+[root README](../README.md#what-you-need-installed).
+
 ### Do I have to build a real payment integration?
 
 **No.** Explicitly not. The client's payments already work in production and are out of

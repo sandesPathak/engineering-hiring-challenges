@@ -41,6 +41,32 @@ conversation to have in the interview.
 
 ---
 
+## What you need installed
+
+Five things, and four of them you probably already have. Every link below is the official
+download page.
+
+| | What | Why | Link |
+|---|---|---|---|
+| 1 | **Docker Desktop** (or Docker Engine + Compose v2 on Linux) | `docker compose up --build` has to work. This is 20 of the 100 points. | [docs.docker.com/get-started/get-docker](https://docs.docker.com/get-started/get-docker/) · [Compose on Linux](https://docs.docker.com/compose/install/linux/) |
+| 2 | **Node.js 24 LTS** | Both exercises run on Node 24. | [nodejs.org/en/download](https://nodejs.org/en/download) · via [nvm](https://github.com/nvm-sh/nvm) — `nvm install 24 && nvm use 24` |
+| 3 | **Git** | Your commit history is graded. | [git-scm.com/downloads](https://git-scm.com/downloads) |
+| 4 | **A GitHub account** | You submit a repository link. | [github.com/signup](https://github.com/signup) |
+| 5 | **A screen recorder** | 2–3 minute walkthrough, with your voice. | [Loom](https://www.loom.com/) · [OBS](https://obsproject.com/) · macOS `Cmd-Shift-5` · Windows Game Bar `Win-G` |
+
+Check you are ready — both commands must print a version:
+
+```bash
+node -v            # v24.x
+docker compose version   # v2.x
+```
+
+You do **not** need Postgres, a database GUI, or any cloud account installed on your
+machine. If you use Postgres it runs in a container, from your compose file — see
+[`docs/05-docker-and-deployment.md`](docs/05-docker-and-deployment.md).
+
+---
+
 ## Prefer it as one document?
 
 **[`Hiring_Handbook.pdf`](Hiring_Handbook.pdf)** — one document covering all of the
